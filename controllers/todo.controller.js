@@ -6,7 +6,7 @@ exports.getAll = function (req, res) {
             return res.send(err);
         }
         else{
-            res.send(todo);
+            return res.send(todo);
         }
     })
 };
@@ -22,10 +22,10 @@ exports.create = function(req, res){
 
     todo.save(function (err) {
         if (err) {
-            res.send((err));
+            return res.send((err));
         }
         else{
-            res.send('Todo Created successfully');
+            return res.send('Todo Created successfully');
         }
     })
 }
@@ -33,10 +33,10 @@ exports.create = function(req, res){
 exports.makeDone = function(req, res) {
     Todo.findOneAndUpdate({ id : req.params.id}, {$set: { done : true }}, function (err, product) {
         if (err){
-            res.send(err);
+            return res.send(err);
         } 
         else {
-            res.send('Todo udpated.');
+            return res.send('Todo udpated.');
         }
     });
 }
@@ -44,10 +44,10 @@ exports.makeDone = function(req, res) {
 exports.delTodo = function(req, res){
     Todo.findOneAndDelete({ id : req.params.id}, function(err){
         if(err){
-            res.send(err);
+            return res.send(err);
         }
         else {
-            res.send('Todo successfully deleted');
+            return res.send('Todo successfully deleted');
         }
     });
 }
