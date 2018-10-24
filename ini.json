@@ -1,0 +1,10 @@
+{
+    "server": {
+        "hostname" : "localhost",
+        "port" : 8080
+    },
+    "mongo" : {
+        "url" : "mongodb://localhost:27017/node_js",
+        "collection" : "todo_collections"
+    }
+}
