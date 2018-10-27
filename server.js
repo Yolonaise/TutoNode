@@ -7,7 +7,6 @@ const todo = require('./routes/todo.route');
 const user = require('./routes/user.route');
 const api = require('./routes/api.route');
 const ini = require('./ini');
-const apiInterceptor = require('./interceptors/api.interceptor');
 
 //Instanciate server's Objects
 const app = express();
