@@ -1,3 +1,3 @@
 exports.status = function(req, res){
-    res.send("Server is online");
+    res.send({ status: 200, message: "Server is online" });
 }

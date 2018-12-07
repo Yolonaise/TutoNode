@@ -6,7 +6,9 @@ const main = require('./routes/main.route');
 const todo = require('./routes/todo.route');
 const user = require('./routes/user.route');
 const api = require('./routes/api.route');
+const product = require('./routes/product.route');
 const ini = require('./ini');
+const log_interceptror = require('./interceptors/log.interceptor');
 
 //Instanciate server's Objects
 const app = express();
@@ -18,17 +20,18 @@ mongoose.connect(ini.mongo.url, {useNewUrlParser : true }, function(err, db){
 });
 
 mongoose.Promise = global.Promise;
-const db = mongoose.connection;
 
 //Register json parser
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(log_interceptror);
 
 //Register routes
 app.use('/todo', todo);
 app.use('/server', main);
 app.use('/user', user);
 app.use('/api', api);
+app.use('/product', product);
 
 //Listenning
 app.listen(ini.server.port, ini.server.hostname, () => {

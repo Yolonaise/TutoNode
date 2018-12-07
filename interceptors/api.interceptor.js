@@ -1,7 +1,6 @@
 const Api = require("../models/api.model");
 
 module.exports = function(req, res, next){
-    console.log("API interceptor");
     if(req.headers == null)
         return res.send("missing params");
 

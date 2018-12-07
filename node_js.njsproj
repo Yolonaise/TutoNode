@@ -42,9 +42,23 @@
     <Folder Include="controllers" />
     <Folder Include="interceptors" />
     <Folder Include="models" />
+    <Folder Include="HtmlHelper\" />
     <Folder Include="routes" />
     <Folder Include="utils" />
     <Folder Include="views" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="controllers\product.controller.js" />
+    <Compile Include="HtmlHelper\JavaScript.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="interceptors\log.interceptor.js" />
+    <Compile Include="models\product.model.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="routes\product.route.js">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <!--Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them.-->
