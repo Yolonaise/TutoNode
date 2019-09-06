@@ -21,7 +21,7 @@ mongoose.connect(uri, { useNewUrlParser: true }, function (err, db) {
     else console.log('Mongo db is connected');
 });
 
-// mongoose.Promise = global.Promise;
+mongoose.Promise = global.Promise;
 
 //Register json parser
 app.use(bodyParser.json());
