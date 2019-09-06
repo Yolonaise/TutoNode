@@ -1,6 +1,6 @@
 //Process all the require
 const express = require('express');
-//const mongoose = require('mongoose');
+const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const main = require('./routes/main.route');
 const todo = require('./routes/todo.route');
@@ -13,13 +13,15 @@ var PORT = process.env.PORT || 8080;
 //Instanciate server's Objects
 const app = express();
 
-//Register mongoose db
-// mongoose.connect(ini.mongo.url, { useNewUrlParser: true }, function (err, db) {
-//     if (err) console.error.bind(console, 'MongoDB connection error:');
-//     else console.log('Mongo db is connected');
-// });
+const uri = "mongodb+srv://yolonese:yolonese1234@cluster0-gdmye.gcp.mongodb.net/test?retryWrites=true&w=majority";
 
-//mongoose.Promise = global.Promise;
+//Register mongoose db
+mongoose.connect(uri, { useNewUrlParser: true }, function (err, db) {
+    if (err) console.error.bind(console, 'MongoDB connection error:');
+    else console.log('Mongo db is connected');
+});
+
+// mongoose.Promise = global.Promise;
 
 //Register json parser
 app.use(bodyParser.json());
