@@ -14,8 +14,8 @@ const log_interceptror = require('./interceptors/log.interceptor');
 const app = express();
 
 //Register mongoose db
-mongoose.connect(ini.mongo.url, {useNewUrlParser : true }, function(err, db){
-    if(err) console.error.bind(console, 'MongoDB connection error:');
+mongoose.connect(ini.mongo.url, { useNewUrlParser: true }, function (err, db) {
+    if (err) console.error.bind(console, 'MongoDB connection error:');
     else console.log('Mongo db is connected');
 });
 
@@ -35,5 +35,5 @@ app.use('/product', product);
 
 //Listenning
 app.listen(ini.server.port, ini.server.hostname, () => {
-    console.log('Server is up and running on port numner ' + ini.server.port);
+    console.log('Server is up and running on ' + ini.server.hostname + ':' + ini.server.port);
 });
