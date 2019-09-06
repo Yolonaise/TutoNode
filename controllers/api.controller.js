@@ -53,18 +53,10 @@ exports.getApi = function (req, res) {
     if (req.params.pseudo == null)
         return res.send({ status: 206, error: "User parameters not found." });
 
-    User.findOne({ pseudo: req.params.pseudo }, function (err, user) {
+    Api.find({ userId: req.params.pseudo }, function (err, apis) {
         if (err)
-            return res.send({ status: 206, error: err });
+            return res.send({ status: 500, error: err });
 
-        if (user == null)
-            return res.send({ status: 206, error: "no user found with " + req.params.pseudo });
-
-        Api.find({ userId: user._id }, function (err, apis) {
-            if (err)
-                return res.send({ status: 500, error: err });
-
-            return res.send({ status: 200, apikeys: apis });
-        });
+        return res.send({ status: 200, apikeys: apis });
     });
 }
