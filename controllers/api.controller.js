@@ -1,20 +1,19 @@
 const Api = require('../models/api.model');
 const apiUtils = require('../utils/api.utils');
-const Boom = require('boom');
 
 exports.createApi = function (req, res) {
     if (req.body.userId == null)
-        return res.send(Boom.badRequest('This function is available for registered account').output);
+        return res.boom.badRequest('This function is available for registered account');
 
     if (req.body.applicationName == null)
-        return res.send(Boom.badRequest('application name is missing.').output);
+        return res.boom.badRequest('application name is missing.');
 
     Api.findOne({ applicationName: req.body.applicationName }, function (err, a) {
         if (err)
-            return res.send(Boom.internal('Internal error', err).output);
+            return res.boom.internal('Internal error', err);
 
         if (a != undefined)
-            return res.send(Boom.conflict(`The server has already an app named ${req.body.applicationName}`).output);
+            return res.boom.conflict(`The server has already an app named ${req.body.applicationName}`);
 
         var key = apiUtils.generateKey(req.body.applicationName);
         let api = new Api({
@@ -25,9 +24,9 @@ exports.createApi = function (req, res) {
 
         api.save(function (saveErr) {
             if (saveErr)
-                return res.send(Boom.internal('Internal error', saveErr).output);
+                return res.boom.internal('Internal error', saveErr);
             else
-                return res.send({ statusCode: 200, apikey: api });
+                return res.send({ status: 200, apikey: api });
         });
 
     });
@@ -35,15 +34,15 @@ exports.createApi = function (req, res) {
 
 exports.getApi = function (req, res) {
     if (req.params == null)
-        return res.send(Boom.badRequest('No parameters available').output);
+        return res.boom.badRequest('No parameters available');
 
     if (req.params.pseudo == null)
-        return res.send(Boom.badRequest('User parameters not found.').output);
+        return res.boom.badRequest('User parameters not found.');
 
     Api.find({ userId: req.params.pseudo }, function (err, apis) {
         if (err)
-            return res.send(Boom.internal('Internal error', err).output);
+            return res.boom.internal('Internal error', err);
 
-        return res.send({ statusCode: 200, apikeys: apis });
+        return res.send({ status: 200, apikeys: apis });
     });
 }
