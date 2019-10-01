@@ -22,7 +22,7 @@ module.exports = function (req, res, next) {
         Jwt.verify(req.headers.token, api.key, function (err, decoded) {
             if (err)
                 return res.send(err);
-            
+
             User.findOne({ pseudo: decoded.username }, function (err, user) {
                 if (err)
                     return res.send(err);

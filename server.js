@@ -3,10 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const main = require('./routes/main.route');
-const todo = require('./routes/todo.route');
-const user = require('./routes/user.route');
 const api = require('./routes/api.route');
-const product = require('./routes/product.route');
 const log_interceptror = require('./interceptors/log.interceptor');
 
 var PORT = process.env.PORT || 8080;
@@ -29,11 +26,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(log_interceptror);
 
 //Register routes
-app.use('/todo', todo);
 app.use('/server', main);
-app.use('/user', user);
 app.use('/api', api);
-app.use('/product', product);
 
 //Listenning
 app.listen(PORT, () => {

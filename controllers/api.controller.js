@@ -1,5 +1,4 @@
 const Api = require("../models/api.model");
-const User = require("../models/user.model");
 const apiUtils = require("../utils/api.utils");
 
 exports.createApi = function (req, res) {
@@ -14,7 +13,7 @@ exports.createApi = function (req, res) {
             return res.send(err);
 
         if (a != undefined)
-            return res.send({ status: 401, error: "user has already an app name " + req.body.applicationName });
+            return res.send({ status: 401, error: "The app has already an app named " + req.body.applicationName });
 
         var key = apiUtils.generateKey(req.body.applicationName);
         let api = new Api({
