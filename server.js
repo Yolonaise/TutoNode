@@ -2,9 +2,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const main = require('./routes/main.route');
-const api = require('./routes/api.route');
-const log_interceptror = require('./interceptors/log.interceptor');
+const main = require('./src/routes/main.route');
+const api = require('./src/routes/api.route');
+const log_interceptror = require('./src/interceptors/log.interceptor');
 const boom = require('express-boom');
 
 var PORT = process.env.PORT || 8080;
