@@ -3,6 +3,7 @@ import MainRoute from './routes/main.route';
 import ApiRoute from './routes/api.route';
 import { connect } from 'mongoose';
 import { MongoError } from 'mongodb';
+import boom from 'express-boom';
 
 const express = require('express');
 
@@ -21,7 +22,7 @@ export default class Server {
             if (err) console.error.bind(console, 'MongoDB connection error:');
             else console.log('Mongo db is connected');
         });
-
+        this.app.use(boom());
         this.app.use('/server', new MainRoute().configure());
         this.app.use('/api', new ApiRoute().configure())
     }

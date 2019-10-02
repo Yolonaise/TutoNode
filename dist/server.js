@@ -1,8 +1,12 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const main_route_1 = require("./routes/main.route");
-const api_route_1 = require("./routes/api.route");
+const main_route_1 = __importDefault(require("./routes/main.route"));
+const api_route_1 = __importDefault(require("./routes/api.route"));
 const mongoose_1 = require("mongoose");
+const express_boom_1 = __importDefault(require("express-boom"));
 const express = require('express');
 class Server {
     constructor(port) {
@@ -17,6 +21,7 @@ class Server {
             else
                 console.log('Mongo db is connected');
         });
+        this.app.use(express_boom_1.default());
         this.app.use('/server', new main_route_1.default().configure());
         this.app.use('/api', new api_route_1.default().configure());
     }
