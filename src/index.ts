@@ -1,2 +1,4 @@
-console.log('hello petit lapin');
-console.log('Viens ici que je te mette une cartouche');
+import Server from './server';
+
+const server = new Server(8080);
+server.start();
