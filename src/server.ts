@@ -1,20 +1,33 @@
-import { Request, Response } from 'express';
+import { Application } from 'express';
+import MainRoute from './routes/main.route';
+import ApiRoute from './routes/api.route';
+import { connect } from 'mongoose';
+import { MongoError } from 'mongodb';
+
 const express = require('express');
 
 export default class Server {
-
+    readonly uri = "mongodb+srv://yolonese:yolonese1234@cluster0-gdmye.gcp.mongodb.net/test?retryWrites=true&w=majority";
+    readonly app: Application;
     readonly port: number;
+
     constructor(port: number) {
+        this.app = express();
         this.port = port;
     }
 
-    start() {
-        const app = express();
-        app.get('/', function (req: Request, res: Response) {
-            res.send('Hello World');
+    configure() {
+        connect(this.uri, { useUnifiedTopology: true, useNewUrlParser: true }, (err: MongoError) => {
+            if (err) console.error.bind(console, 'MongoDB connection error:');
+            else console.log('Mongo db is connected');
         });
 
-        app.listen(this.port, () => {
+        this.app.use('/server', new MainRoute().configure());
+        this.app.use('/api', new ApiRoute().configure())
+    }
+
+    start() {
+        this.app.listen(this.port, () => {
             console.log(`Wathing on port ${this.port}`);
         });
     }
