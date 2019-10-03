@@ -32,7 +32,7 @@ export default class ApiController implements IController {
                 if (saveErr)
                     return res.boom.internal('Internal error', saveErr);
                 else
-                    return res.send({ status: 200, apikey: api });
+                    return res.send({ statusCode: 200, apikey: api });
             });
         });
     }
@@ -46,7 +46,7 @@ export default class ApiController implements IController {
             if (err)
                 return res.boom.internal('Internal error', err);
 
-            return res.send({ status: 200, apikeys: apis });
+            return res.send({ statusCode: 200, apikeys: apis });
         });
     }
 }

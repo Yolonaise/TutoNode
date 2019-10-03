@@ -16,10 +16,10 @@ export default class UserRoute implements IRoute<UserController> {
 
         router.use(interceptApi);
 
-        router.get('/:pseudo', (res: express.Request, req: express.Response) => this.controller.get(res, req));
-        router.post('/', (res: express.Request, req: express.Response) => this.controller.create(res, req));
-        router.put('/', (res: express.Request, req: express.Response) => this.controller.update(res, req));
-        router.delete('/', (res: express.Request, req: express.Response) => this.controller.delete(res, req));
+        router.get('/:email', (req: express.Request, res: express.Response) => this.controller.get(req, res));
+        router.post('/', (req: express.Request, res: express.Response) => this.controller.create(req, res));
+        router.put('/', (req: express.Request, res: express.Response) => this.controller.update(req, res));
+        router.delete('/', (req: express.Request, res: express.Response) => this.controller.delete(req, res));
 
         return router;
     }

@@ -14,10 +14,10 @@ class UserRoute {
     configure() {
         const router = express_1.default.Router();
         router.use(api_interceptor_1.default);
-        router.get('/:pseudo', (res, req) => this.controller.get(res, req));
-        router.post('/', (res, req) => this.controller.create(res, req));
-        router.put('/', (res, req) => this.controller.update(res, req));
-        router.delete('/', (res, req) => this.controller.delete(res, req));
+        router.get('/:email', (req, res) => this.controller.get(req, res));
+        router.post('/', (req, res) => this.controller.create(req, res));
+        router.put('/', (req, res) => this.controller.update(req, res));
+        router.delete('/', (req, res) => this.controller.delete(req, res));
         return router;
     }
 }

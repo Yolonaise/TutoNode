@@ -17,6 +17,8 @@ export function validateGetApi(req: express.Request): any {
 
     if (req.params.pseudo == null)
         return Boom.badRequest('User parameters not found.');
+
+    return undefined;
 }
 
 export function validateHeadersApi(req: express.Request): any {

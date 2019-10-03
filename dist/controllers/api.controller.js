@@ -28,7 +28,7 @@ class ApiController {
                 if (saveErr)
                     return res.boom.internal('Internal error', saveErr);
                 else
-                    return res.send({ status: 200, apikey: api });
+                    return res.send({ statusCode: 200, apikey: api });
             });
         });
     }
@@ -39,7 +39,7 @@ class ApiController {
         api_model_1.default.find({ userId: req.params.pseudo }, function (err, apis) {
             if (err)
                 return res.boom.internal('Internal error', err);
-            return res.send({ status: 200, apikeys: apis });
+            return res.send({ statusCode: 200, apikeys: apis });
         });
     }
 }

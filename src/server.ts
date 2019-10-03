@@ -6,6 +6,7 @@ import { Application } from 'express';
 import { MongoError } from 'mongodb';
 import { connect } from 'mongoose';
 import UserRoute from './routes/user.route';
+import bodyParser from 'body-parser';
 
 export default class Server {
     readonly uri = "mongodb+srv://yolonese:yolonese1234@cluster0-gdmye.gcp.mongodb.net/test?retryWrites=true&w=majority";
@@ -22,6 +23,10 @@ export default class Server {
             if (err) console.error.bind(console, 'MongoDB connection error:');
             else console.log('Mongo db is connected');
         });
+
+        this.app.use(bodyParser.json());
+        this.app.use(bodyParser.urlencoded({ extended: false }));
+
         this.app.use(boom());
         this.app.use('/server', new MainRoute().configure());
         this.app.use('/api', new ApiRoute().configure());

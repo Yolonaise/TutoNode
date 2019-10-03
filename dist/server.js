@@ -9,6 +9,7 @@ const express_1 = __importDefault(require("express"));
 const main_route_1 = __importDefault(require("./routes/main.route"));
 const mongoose_1 = require("mongoose");
 const user_route_1 = __importDefault(require("./routes/user.route"));
+const body_parser_1 = __importDefault(require("body-parser"));
 class Server {
     constructor(port) {
         this.uri = "mongodb+srv://yolonese:yolonese1234@cluster0-gdmye.gcp.mongodb.net/test?retryWrites=true&w=majority";
@@ -22,6 +23,8 @@ class Server {
             else
                 console.log('Mongo db is connected');
         });
+        this.app.use(body_parser_1.default.json());
+        this.app.use(body_parser_1.default.urlencoded({ extended: false }));
         this.app.use(express_boom_1.default());
         this.app.use('/server', new main_route_1.default().configure());
         this.app.use('/api', new api_route_1.default().configure());
