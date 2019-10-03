@@ -1,19 +1,19 @@
 import { Request, Response, NextFunction } from 'express';
 import { MongoError } from 'mongodb';
 import Api, { IApi } from '../models/api.model';
+import { validateHeadersApi } from '../validators/api.validator';
+import Boom = require('boom');
 
 export default function interceptApi(req: Request, res: Response, next: NextFunction) {
-    if (req.headers == null)
-        return res.boom.unauthorized('missing headers - api interceptor');
-
-    if (req.headers.apikey == null)
-        return res.boom.unauthorized('apikey cannot be null');
+    let error = validateHeadersApi(req);
+    if (error !== undefined && error instanceof Boom)
+        return res.boom.boomify(error);
 
     Api.findOne({ key: req.headers.apikey }, function (err: MongoError, api: IApi) {
         if (err)
             return res.boom.internal('Internal error', err);
         if (api == null)
-            return res.boom.unauthorized("api is not valid");
+            return res.boom.unauthorized("api is unkown");
         next();
     });
 };

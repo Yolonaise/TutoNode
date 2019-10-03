@@ -1,8 +1,10 @@
 import ApiController from "../controllers/api.controller";
 import express from "express";
 import interceptApi from "../interceptors/api.interceptor";
+import { IRoute } from "../interfaces/route.interface";
 
-export default class ApiRoute {
+export default class ApiRoute implements IRoute<ApiController> {
+    endpoint: string = '/api';
     controller: ApiController;
 
     constructor() {

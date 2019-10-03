@@ -5,6 +5,7 @@ import MainRoute from './routes/main.route';
 import { Application } from 'express';
 import { MongoError } from 'mongodb';
 import { connect } from 'mongoose';
+import UserRoute from './routes/user.route';
 
 export default class Server {
     readonly uri = "mongodb+srv://yolonese:yolonese1234@cluster0-gdmye.gcp.mongodb.net/test?retryWrites=true&w=majority";
@@ -23,7 +24,8 @@ export default class Server {
         });
         this.app.use(boom());
         this.app.use('/server', new MainRoute().configure());
-        this.app.use('/api', new ApiRoute().configure())
+        this.app.use('/api', new ApiRoute().configure());
+        this.app.use('/user', new UserRoute().configure());
     }
 
     start() {

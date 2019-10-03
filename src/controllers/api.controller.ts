@@ -1,17 +1,18 @@
 import { Request, Response } from 'express';
 import Api from '../models/api.model';
 import generateKey from '../utils/api.utils';
+import IController from '../interfaces/controller.interface';
+import { validateGetApi, validateCreateApi } from '../validators/api.validator';
+import Boom from 'boom';
 
-export default class ApiController {
+export default class ApiController implements IController {
 
     constructor() { }
 
     createApi(req: Request, res: Response) {
-        if (req.body.userId == null)
-            return res.boom.badRequest('This function is available for registered account');
-
-        if (req.body.applicationName == null)
-            return res.boom.badRequest('application name is missing.');
+        let error = validateCreateApi(req);
+        if (error !== undefined && error instanceof Boom)
+            return res.boom.boomify(error);
 
         Api.findOne({ applicationName: req.body.applicationName }, function (err: Error, a: any) {
             if (err)
@@ -37,11 +38,9 @@ export default class ApiController {
     }
 
     getApi(req: Request, res: Response) {
-        if (req.params == null)
-            return res.boom.badRequest('No parameters available');
-
-        if (req.params.pseudo == null)
-            return res.boom.badRequest('User parameters not found.');
+        let error = validateGetApi(req);
+        if (error !== undefined && error instanceof Boom)
+            return res.boom.boomify(error);
 
         Api.find({ userId: req.params.pseudo }, function (err: Error, apis: any) {
             if (err)

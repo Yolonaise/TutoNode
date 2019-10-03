@@ -1,9 +1,10 @@
-import { Request, Response } from "express";
+import express from 'express';
+import IController from '../interfaces/controller.interface';
 
-export default class MainController {
+export default class MainController implements IController {
     constructor() { }
 
-    getStatus(req: Request, res: Response) {
-        return res.send({ statusCode: 200, message: "Server is online" });
+    getStatus(req: express.Request, res: express.Response) {
+        return res.send({ statusCode: 200, message: 'Server is online' });
     }
 }

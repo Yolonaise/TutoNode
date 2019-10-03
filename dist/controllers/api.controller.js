@@ -5,13 +5,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const api_model_1 = __importDefault(require("../models/api.model"));
 const api_utils_1 = __importDefault(require("../utils/api.utils"));
+const api_validator_1 = require("../validators/api.validator");
+const boom_1 = __importDefault(require("boom"));
 class ApiController {
     constructor() { }
     createApi(req, res) {
-        if (req.body.userId == null)
-            return res.boom.badRequest('This function is available for registered account');
-        if (req.body.applicationName == null)
-            return res.boom.badRequest('application name is missing.');
+        let error = api_validator_1.validateCreateApi(req);
+        if (error !== undefined && error instanceof boom_1.default)
+            return res.boom.boomify(error);
         api_model_1.default.findOne({ applicationName: req.body.applicationName }, function (err, a) {
             if (err)
                 return res.boom.internal('Internal error', err);
@@ -32,10 +33,9 @@ class ApiController {
         });
     }
     getApi(req, res) {
-        if (req.params == null)
-            return res.boom.badRequest('No parameters available');
-        if (req.params.pseudo == null)
-            return res.boom.badRequest('User parameters not found.');
+        let error = api_validator_1.validateGetApi(req);
+        if (error !== undefined && error instanceof boom_1.default)
+            return res.boom.boomify(error);
         api_model_1.default.find({ userId: req.params.pseudo }, function (err, apis) {
             if (err)
                 return res.boom.internal('Internal error', err);

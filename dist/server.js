@@ -8,6 +8,7 @@ const express_boom_1 = __importDefault(require("express-boom"));
 const express_1 = __importDefault(require("express"));
 const main_route_1 = __importDefault(require("./routes/main.route"));
 const mongoose_1 = require("mongoose");
+const user_route_1 = __importDefault(require("./routes/user.route"));
 class Server {
     constructor(port) {
         this.uri = "mongodb+srv://yolonese:yolonese1234@cluster0-gdmye.gcp.mongodb.net/test?retryWrites=true&w=majority";
@@ -24,6 +25,7 @@ class Server {
         this.app.use(express_boom_1.default());
         this.app.use('/server', new main_route_1.default().configure());
         this.app.use('/api', new api_route_1.default().configure());
+        this.app.use('/user', new user_route_1.default().configure());
     }
     start() {
         this.app.listen(this.port, () => {

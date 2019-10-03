@@ -8,6 +8,7 @@ const express_1 = __importDefault(require("express"));
 const api_interceptor_1 = __importDefault(require("../interceptors/api.interceptor"));
 class ApiRoute {
     constructor() {
+        this.endpoint = '/api';
         this.controller = new api_controller_1.default();
     }
     configure() {
