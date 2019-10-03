@@ -1,7 +1,6 @@
 import MainController from "../controllers/main.controller";
-import { Router, Request, Response } from "express";
+import express from "express";
 import interceptApi from "../interceptors/api.interceptor";
-const express = require('express');
 
 export default class MainRoute {
     controller: MainController;
@@ -10,10 +9,10 @@ export default class MainRoute {
         this.controller = new MainController();
     }
 
-    configure(): Router {
+    configure(): express.Router {
         const router = express.Router();
         router.use(interceptApi);
-        router.get('/', (req: Request, res: Response) => this.controller.getStatus(req, res));
+        router.get('/', (req: express.Request, res: express.Response) => this.controller.getStatus(req, res));
         return router;
     }
 }

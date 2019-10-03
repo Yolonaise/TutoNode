@@ -1,11 +1,10 @@
-import { Application } from 'express';
-import MainRoute from './routes/main.route';
 import ApiRoute from './routes/api.route';
-import { connect } from 'mongoose';
-import { MongoError } from 'mongodb';
 import boom from 'express-boom';
-
-const express = require('express');
+import express from 'express';
+import MainRoute from './routes/main.route';
+import { Application } from 'express';
+import { MongoError } from 'mongodb';
+import { connect } from 'mongoose';
 
 export default class Server {
     readonly uri = "mongodb+srv://yolonese:yolonese1234@cluster0-gdmye.gcp.mongodb.net/test?retryWrites=true&w=majority";

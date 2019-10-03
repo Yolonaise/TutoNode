@@ -1,7 +1,6 @@
 import ApiController from "../controllers/api.controller";
-import { Router, Request, Response } from "express";
+import express from "express";
 import interceptApi from "../interceptors/api.interceptor";
-const express = require('express');
 
 export default class ApiRoute {
     controller: ApiController;
@@ -10,10 +9,10 @@ export default class ApiRoute {
         this.controller = new ApiController();
     }
 
-    configure(): Router {
+    configure(): express.Router {
         const router = express.Router();
         router.use(interceptApi);
-        router.get('/get/:pseudo', (res: Request, req: Response) => this.controller.getApi(res, req));
+        router.get('/get/:pseudo', (res: express.Request, req: express.Response) => this.controller.getApi(res, req));
         //router.get('/get/:pseudo', (res: Request, req: Response) => this.controller.createApi(res, req));
         return router;
     }

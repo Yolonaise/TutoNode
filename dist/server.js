@@ -3,15 +3,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const main_route_1 = __importDefault(require("./routes/main.route"));
 const api_route_1 = __importDefault(require("./routes/api.route"));
-const mongoose_1 = require("mongoose");
 const express_boom_1 = __importDefault(require("express-boom"));
-const express = require('express');
+const express_1 = __importDefault(require("express"));
+const main_route_1 = __importDefault(require("./routes/main.route"));
+const mongoose_1 = require("mongoose");
 class Server {
     constructor(port) {
         this.uri = "mongodb+srv://yolonese:yolonese1234@cluster0-gdmye.gcp.mongodb.net/test?retryWrites=true&w=majority";
-        this.app = express();
+        this.app = express_1.default();
         this.port = port;
     }
     configure() {
