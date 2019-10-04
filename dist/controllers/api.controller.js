@@ -54,7 +54,7 @@ class ApiController {
     }
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            let error = api_validator_1.validateCreateApi(req);
+            let error = api_validator_1.validateDeleteApi(req);
             if (error !== undefined && error instanceof boom_1.default)
                 return res.boom.boomify(error);
             try {
