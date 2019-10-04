@@ -14,8 +14,9 @@ export default class ApiRoute implements IRoute<ApiController> {
     configure(): express.Router {
         const router = express.Router();
         router.use(interceptApi);
-        router.get('/:pseudo', (req: express.Request, res: express.Response) => this.controller.getApi(req, res));
-        router.post('/', (res: express.Request, req: express.Response) => this.controller.createApi(res, req));
+        router.get('/:email', (req: express.Request, res: express.Response) => this.controller.get(req, res));
+        router.post('/', (res: express.Request, req: express.Response) => this.controller.create(res, req));
+        router.put('/', (res: express.Request, req: express.Response) => this.controller.update(res, req));
         return router;
     }
 }

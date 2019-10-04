@@ -4,12 +4,26 @@ import generateKey from '../utils/api.utils';
 import IController from '../interfaces/controller.interface';
 import { validateGetApi, validateCreateApi } from '../validators/api.validator';
 import Boom from 'boom';
+import ICrud from '../interfaces/crud.interface';
 
-export default class ApiController implements IController {
+export default class ApiController implements ICrud {
 
     constructor() { }
 
-    async createApi(req: Request, res: Response) {
+    async get(req: Request, res: Response) {
+        let error = validateGetApi(req);
+        if (error !== undefined && error instanceof Boom)
+            return res.boom.boomify(error);
+
+        try {
+            let apis = await Api.find({ email: req.params.email });
+            return res.send({ statusCode: 200, apikeys: apis });
+        } catch (err) {
+            return res.boom.internal('Internal error', err);
+        }
+    }
+
+    async create(req: Request, res: Response) {
         let error = validateCreateApi(req);
         if (error !== undefined && error instanceof Boom)
             return res.boom.boomify(error);
@@ -27,13 +41,14 @@ export default class ApiController implements IController {
             });
 
             await api.save();
-            return res.send({ statusCode: 200, apikey: api });
+            return res.send({ statusCode: 200, api: api });
         } catch (err) {
+            console.log(err);
             return res.boom.internal('Internal error', err);
         }
     }
 
-    async getApi(req: Request, res: Response) {
+    async update(req: Request, res: Response) {
         let error = validateGetApi(req);
         if (error !== undefined && error instanceof Boom)
             return res.boom.boomify(error);
@@ -44,5 +59,9 @@ export default class ApiController implements IController {
         } catch (err) {
             return res.boom.internal('Internal error', err);
         }
+    }
+
+    delete(req: Request, res: Response) {
+        throw new Error("Method not implemented.");
     }
 }

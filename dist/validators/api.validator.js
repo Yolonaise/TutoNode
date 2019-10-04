@@ -15,8 +15,8 @@ exports.validateCreateApi = validateCreateApi;
 function validateGetApi(req) {
     if (req.params == null)
         return boom_1.default.badRequest('No parameters available');
-    if (req.params.pseudo == null)
-        return boom_1.default.badRequest('User parameters not found.');
+    if (req.params.email == null)
+        return boom_1.default.badRequest('Email parameters not found.');
     return undefined;
 }
 exports.validateGetApi = validateGetApi;

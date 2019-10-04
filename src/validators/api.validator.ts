@@ -15,8 +15,8 @@ export function validateGetApi(req: express.Request): any {
     if (req.params == null)
         return Boom.badRequest('No parameters available');
 
-    if (req.params.pseudo == null)
-        return Boom.badRequest('User parameters not found.');
+    if (req.params.email == null)
+        return Boom.badRequest('Email parameters not found.');
 
     return undefined;
 }

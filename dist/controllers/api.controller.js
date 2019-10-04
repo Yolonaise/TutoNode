@@ -18,7 +18,21 @@ const api_validator_1 = require("../validators/api.validator");
 const boom_1 = __importDefault(require("boom"));
 class ApiController {
     constructor() { }
-    createApi(req, res) {
+    get(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let error = api_validator_1.validateGetApi(req);
+            if (error !== undefined && error instanceof boom_1.default)
+                return res.boom.boomify(error);
+            try {
+                let apis = yield api_model_1.default.find({ email: req.params.email });
+                return res.send({ statusCode: 200, apikeys: apis });
+            }
+            catch (err) {
+                return res.boom.internal('Internal error', err);
+            }
+        });
+    }
+    create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             let error = api_validator_1.validateCreateApi(req);
             if (error !== undefined && error instanceof boom_1.default)
@@ -34,14 +48,15 @@ class ApiController {
                     email: req.body.email
                 });
                 yield api.save();
-                return res.send({ statusCode: 200, apikey: api });
+                return res.send({ statusCode: 200, api: api });
             }
             catch (err) {
+                console.log(err);
                 return res.boom.internal('Internal error', err);
             }
         });
     }
-    getApi(req, res) {
+    update(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             let error = api_validator_1.validateGetApi(req);
             if (error !== undefined && error instanceof boom_1.default)
@@ -54,6 +69,9 @@ class ApiController {
                 return res.boom.internal('Internal error', err);
             }
         });
+    }
+    delete(req, res) {
+        throw new Error("Method not implemented.");
     }
 }
 exports.default = ApiController;
