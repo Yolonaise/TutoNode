@@ -9,7 +9,7 @@ export interface IUser extends Document {
 const userSchema = new Schema({
     name: { type: String, required: true, max: 100 },
     email: { type: String, required: true, max: 250 },
-    isRegistered: { type: Boolean }
+    isRegistered: { type: Boolean, required: true, default: false }
 });
 
 // Export the model

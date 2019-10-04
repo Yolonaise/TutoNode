@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const boom_1 = __importDefault(require("boom"));
 function validateCreateApi(req) {
-    if (req.body.userId == null)
+    if (req.body.email == null)
         return boom_1.default.badRequest('This function is available for registered account');
     if (req.body.applicationName == null)
         return boom_1.default.badRequest('application name is missing.');

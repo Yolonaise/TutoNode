@@ -2,7 +2,7 @@ import express from 'express';
 import Boom from 'boom';
 
 export function validateCreateApi(req: express.Request): any {
-    if (req.body.userId == null)
+    if (req.body.email == null)
         return Boom.badRequest('This function is available for registered account');
 
     if (req.body.applicationName == null)

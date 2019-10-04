@@ -35,7 +35,6 @@ export default class UserController implements ICrud {
 
             return res.send({ statusCode: 200, user: result });
         } catch (err) {
-            console.log(err)
             return res.boom.internal('Internal error', err);
         }
     }

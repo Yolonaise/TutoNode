@@ -14,8 +14,8 @@ class ApiRoute {
     configure() {
         const router = express_1.default.Router();
         router.use(api_interceptor_1.default);
-        router.get('/get/:pseudo', (req, res) => this.controller.getApi(req, res));
-        //router.get('/get/:pseudo', (res: Request, req: Response) => this.controller.createApi(res, req));
+        router.get('/:pseudo', (req, res) => this.controller.getApi(req, res));
+        router.post('/', (res, req) => this.controller.createApi(res, req));
         return router;
     }
 }

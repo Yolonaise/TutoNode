@@ -9,15 +9,13 @@ export default class ApiController implements IController {
 
     constructor() { }
 
-    createApi(req: Request, res: Response) {
+    async createApi(req: Request, res: Response) {
         let error = validateCreateApi(req);
         if (error !== undefined && error instanceof Boom)
             return res.boom.boomify(error);
 
-        Api.findOne({ applicationName: req.body.applicationName }, function (err: Error, a: any) {
-            if (err)
-                return res.boom.internal('Internal error', err);
-
+        try {
+            let a = await Api.findOne({ applicationName: req.body.applicationName });
             if (a != undefined)
                 return res.boom.conflict(`The server has already an app named ${req.body.applicationName}`);
 
@@ -25,28 +23,26 @@ export default class ApiController implements IController {
             let api = new Api({
                 key: key,
                 applicationName: req.body.applicationName,
-                userId: req.body.userId
+                email: req.body.email
             });
 
-            api.save(function (saveErr) {
-                if (saveErr)
-                    return res.boom.internal('Internal error', saveErr);
-                else
-                    return res.send({ statusCode: 200, apikey: api });
-            });
-        });
+            await api.save();
+            return res.send({ statusCode: 200, apikey: api });
+        } catch (err) {
+            return res.boom.internal('Internal error', err);
+        }
     }
 
-    getApi(req: Request, res: Response) {
+    async getApi(req: Request, res: Response) {
         let error = validateGetApi(req);
         if (error !== undefined && error instanceof Boom)
             return res.boom.boomify(error);
 
-        Api.find({ userId: req.params.pseudo }, function (err: Error, apis: any) {
-            if (err)
-                return res.boom.internal('Internal error', err);
-
+        try {
+            let apis = await Api.find({ userId: req.params.pseudo });
             return res.send({ statusCode: 200, apikeys: apis });
-        });
+        } catch (err) {
+            return res.boom.internal('Internal error', err);
+        }
     }
 }

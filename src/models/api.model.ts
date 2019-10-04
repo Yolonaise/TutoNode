@@ -9,7 +9,7 @@ export interface IApi extends Document {
 const apiSchema = new Schema({
     key: { type: String, required: true, max: 100 },
     applicationName: { type: String, required: true, max: 250 },
-    userId: { type: String, required: true }
+    email: { type: String, required: true }
 });
 
 // Export the model
