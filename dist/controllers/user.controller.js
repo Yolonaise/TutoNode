@@ -24,7 +24,7 @@ class UserController {
                 return res.boom.boomify(error);
             try {
                 let u = yield user_mode_1.default.findOne({ email: req.params.email });
-                return res.send({ statusCode: 200, user: u });
+                return res.status(200).send({ user: u });
             }
             catch (err) {
                 return res.boom.internal('Internal error', err);
@@ -40,9 +40,8 @@ class UserController {
                 let u = yield user_mode_1.default.findOne({ email: req.body.email });
                 if (u)
                     return res.boom.conflict(`User with email ${req.body.email} already exits`);
-                const createUser = new user_mode_1.default(req.body);
-                const result = yield createUser.save();
-                return res.send({ statusCode: 200, user: result });
+                const result = yield new user_mode_1.default(req.body).save();
+                return res.status(200).send({ user: result });
             }
             catch (err) {
                 return res.boom.internal('Internal error', err);

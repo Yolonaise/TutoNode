@@ -28,3 +28,13 @@ function validateHeadersApi(req) {
     return undefined;
 }
 exports.validateHeadersApi = validateHeadersApi;
+function validateDeleteApi(req) {
+    if (req.params == null)
+        return boom_1.default.badRequest('No parameters available');
+    if (req.params.email == null)
+        return boom_1.default.badRequest('Email parameters not found.');
+    if (req.params.applicationName == null)
+        return boom_1.default.badRequest('application name parameters not found.');
+    return undefined;
+}
+exports.validateDeleteApi = validateDeleteApi;

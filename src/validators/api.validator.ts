@@ -30,3 +30,16 @@ export function validateHeadersApi(req: express.Request): any {
 
     return undefined;
 }
+
+export function validateDeleteApi(req: express.Request): any {
+    if (req.params == null)
+        return Boom.badRequest('No parameters available');
+
+    if (req.params.email == null)
+        return Boom.badRequest('Email parameters not found.');
+
+    if (req.params.applicationName == null)
+        return Boom.badRequest('application name parameters not found.');
+
+    return undefined;
+}

@@ -25,7 +25,7 @@ class ApiController {
                 return res.boom.boomify(error);
             try {
                 let apis = yield api_model_1.default.find({ email: req.params.email });
-                return res.send({ statusCode: 200, apikeys: apis });
+                return res.status(200).send({ apikeys: apis });
             }
             catch (err) {
                 return res.boom.internal('Internal error', err);
@@ -41,37 +41,30 @@ class ApiController {
                 let a = yield api_model_1.default.findOne({ applicationName: req.body.applicationName });
                 if (a != undefined)
                     return res.boom.conflict(`The server has already an app named ${req.body.applicationName}`);
-                var key = api_utils_1.default(req.body.applicationName);
-                let api = new api_model_1.default({
-                    key: key,
-                    applicationName: req.body.applicationName,
-                    email: req.body.email
-                });
-                yield api.save();
-                return res.send({ statusCode: 200, api: api });
+                const result = yield new api_model_1.default(Object.assign(Object.assign({}, req.body), { key: api_utils_1.default(req.body.applicationName) })).save();
+                return res.status(200).send({ api: result });
             }
             catch (err) {
-                console.log(err);
                 return res.boom.internal('Internal error', err);
             }
         });
     }
     update(req, res) {
+        return res.boom.methodNotAllowed('An api key cannot be updated');
+    }
+    delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            let error = api_validator_1.validateGetApi(req);
+            let error = api_validator_1.validateCreateApi(req);
             if (error !== undefined && error instanceof boom_1.default)
                 return res.boom.boomify(error);
             try {
-                let apis = yield api_model_1.default.find({ userId: req.params.pseudo });
-                return res.send({ statusCode: 200, apikeys: apis });
+                yield api_model_1.default.findOneAndDelete({ applicationName: req.params.applicationName, email: req.params.email });
+                return res.status(204).send();
             }
             catch (err) {
                 return res.boom.internal('Internal error', err);
             }
         });
-    }
-    delete(req, res) {
-        throw new Error("Method not implemented.");
     }
 }
 exports.default = ApiController;

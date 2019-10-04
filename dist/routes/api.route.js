@@ -17,6 +17,7 @@ class ApiRoute {
         router.get('/:email', (req, res) => this.controller.get(req, res));
         router.post('/', (res, req) => this.controller.create(res, req));
         router.put('/', (res, req) => this.controller.update(res, req));
+        router.delete('/:email/:applicationName', (res, req) => this.controller.delete(res, req));
         return router;
     }
 }

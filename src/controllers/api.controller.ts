@@ -17,7 +17,7 @@ export default class ApiController implements ICrud {
 
         try {
             let apis = await Api.find({ email: req.params.email });
-            return res.send({ statusCode: 200, apikeys: apis });
+            return res.status(200).send({ apikeys: apis });
         } catch (err) {
             return res.boom.internal('Internal error', err);
         }
@@ -33,35 +33,27 @@ export default class ApiController implements ICrud {
             if (a != undefined)
                 return res.boom.conflict(`The server has already an app named ${req.body.applicationName}`);
 
-            var key = generateKey(req.body.applicationName);
-            let api = new Api({
-                key: key,
-                applicationName: req.body.applicationName,
-                email: req.body.email
-            });
-
-            await api.save();
-            return res.send({ statusCode: 200, api: api });
+            const result = await new Api({ ...req.body, key: generateKey(req.body.applicationName) }).save();
+            return res.status(200).send({ api: result });
         } catch (err) {
-            console.log(err);
             return res.boom.internal('Internal error', err);
         }
     }
 
-    async update(req: Request, res: Response) {
-        let error = validateGetApi(req);
+    update(req: Request, res: Response) {
+        return res.boom.methodNotAllowed('An api key cannot be updated');
+    }
+
+    async delete(req: Request, res: Response) {
+        let error = validateCreateApi(req);
         if (error !== undefined && error instanceof Boom)
             return res.boom.boomify(error);
 
         try {
-            let apis = await Api.find({ userId: req.params.pseudo });
-            return res.send({ statusCode: 200, apikeys: apis });
+            await Api.findOneAndDelete({ applicationName: req.params.applicationName, email: req.params.email });
+            return res.status(204).send();
         } catch (err) {
             return res.boom.internal('Internal error', err);
         }
-    }
-
-    delete(req: Request, res: Response) {
-        throw new Error("Method not implemented.");
     }
 }

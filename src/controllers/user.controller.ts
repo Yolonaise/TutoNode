@@ -3,7 +3,6 @@ import ICrud from '../interfaces/crud.interface';
 import User, { IUser } from '../models/user.mode';
 import { validateUserGet, validateUserCreate } from '../validators/user.validator';
 import Boom from 'boom';
-import { userInfo } from 'os';
 
 export default class UserController implements ICrud {
     constructor() { }
@@ -15,7 +14,7 @@ export default class UserController implements ICrud {
 
         try {
             let u = await User.findOne({ email: req.params.email });
-            return res.send({ statusCode: 200, user: u });
+            return res.status(200).send({ user: u });
         } catch (err) {
             return res.boom.internal('Internal error', err);
         }
@@ -30,10 +29,9 @@ export default class UserController implements ICrud {
             let u = await User.findOne({ email: req.body.email });
             if (u)
                 return res.boom.conflict(`User with email ${req.body.email} already exits`);
-            const createUser = new User(req.body as IUser);
-            const result = await createUser.save();
 
-            return res.send({ statusCode: 200, user: result });
+            const result = await new User(req.body as IUser).save();
+            return res.status(200).send({ user: result });
         } catch (err) {
             return res.boom.internal('Internal error', err);
         }
@@ -42,6 +40,7 @@ export default class UserController implements ICrud {
     async update(req: express.Request, res: express.Response) {
         return res.boom.notImplemented('Cannot put user');
     }
+
     async delete(req: express.Request, res: express.Response) {
         return res.boom.notImplemented('Cannot delete user');
     }
