@@ -3,7 +3,7 @@ import ApiController from "../controllers/api.controller";
 import express from "express";
 import interceptApi from "../interceptors/api.interceptor";
 import { IRoute } from "../interfaces/route.interface";
-import { injectable, inject } from "inversify";
+import { injectable, inject } from 'inversify';
 import ICrud from "../interfaces/crud.interface";
 
 @injectable()
