@@ -1,11 +1,13 @@
+import "reflect-metadata";
 import { Request, Response } from 'express';
 import Api from '../models/api.model';
 import generateKey from '../utils/api.utils';
-import IController from '../interfaces/controller.interface';
 import { validateGetApi, validateCreateApi, validateDeleteApi } from '../validators/api.validator';
 import Boom from 'boom';
 import ICrud from '../interfaces/crud.interface';
+import { injectable } from 'inversify';
 
+@injectable()
 export default class ApiController implements ICrud {
 
     constructor() { }

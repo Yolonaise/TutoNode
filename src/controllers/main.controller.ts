@@ -1,6 +1,9 @@
+import "reflect-metadata";
 import express from 'express';
 import IController from '../interfaces/controller.interface';
+import { injectable } from 'inversify';
 
+@injectable()
 export default class MainController implements IController {
     constructor() { }
 

@@ -1,15 +1,21 @@
+import "reflect-metadata";
 import ApiController from "../controllers/api.controller";
 import express from "express";
 import interceptApi from "../interceptors/api.interceptor";
 import { IRoute } from "../interfaces/route.interface";
+import { injectable, inject } from "inversify";
+import ICrud from "../interfaces/crud.interface";
 
-export default class ApiRoute implements IRoute<ApiController> {
+@injectable()
+export default class ApiRoute implements IRoute<ICrud> {
     endpoint: string = '/api';
     controller: ApiController;
 
-    constructor() {
-        this.controller = new ApiController();
+    constructor(@inject(ApiController) controller: ApiController) {
+        this.controller = controller;
     }
+
+    getController(): ApiController { return this.controller; }
 
     configure(): express.Router {
         const router = express.Router();

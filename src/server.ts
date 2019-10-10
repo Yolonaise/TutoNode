@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import ApiRoute from './routes/api.route';
 import boom from 'express-boom';
 import express from 'express';
@@ -7,15 +8,19 @@ import { MongoError } from 'mongodb';
 import { connect } from 'mongoose';
 import UserRoute from './routes/user.route';
 import bodyParser from 'body-parser';
+import { inject, injectable, multiInject } from 'inversify';
+import { IRoute } from "./interfaces/route.interface";
+import IController from "./interfaces/controller.interface";
 
+@injectable()
 export default class Server {
     readonly uri = "mongodb+srv://yolonese:yolonese1234@cluster0-gdmye.gcp.mongodb.net/test?retryWrites=true&w=majority";
     readonly app: Application;
     readonly port: number;
 
-    constructor(port: number) {
+    constructor(@multiInject('IRoute<IController>') private routes: IRoute<IController>[]) {
         this.app = express();
-        this.port = port;
+        this.port = parseInt(<string>process.env.PORT, 10) || 4201;
     }
 
     configure() {
@@ -27,10 +32,13 @@ export default class Server {
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({ extended: false }));
 
+        this.routes.forEach(route => {
+            this.app.use(route.endpoint, route.configure());
+            console.log(`Route ${route.endpoint} created`);
+        });
+
         this.app.use(boom());
-        this.app.use('/server', new MainRoute().configure());
-        this.app.use('/api', new ApiRoute().configure());
-        this.app.use('/user', new UserRoute().configure());
+
     }
 
     start() {

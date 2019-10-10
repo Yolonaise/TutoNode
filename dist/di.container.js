@@ -1,0 +1,21 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const inversify_1 = require("inversify");
+const api_controller_1 = __importDefault(require("./controllers/api.controller"));
+const main_controller_1 = __importDefault(require("./controllers/main.controller"));
+const user_controller_1 = __importDefault(require("./controllers/user.controller"));
+const api_route_1 = __importDefault(require("./routes/api.route"));
+const user_route_1 = __importDefault(require("./routes/user.route"));
+const main_route_1 = __importDefault(require("./routes/main.route"));
+require("reflect-metadata");
+var DIContainer = new inversify_1.Container();
+DIContainer.bind(main_controller_1.default).toSelf();
+DIContainer.bind(api_controller_1.default).toSelf();
+DIContainer.bind(user_controller_1.default).toSelf();
+DIContainer.bind("IRoute<IController>").to(main_route_1.default);
+DIContainer.bind("IRoute<IController>").to(api_route_1.default);
+DIContainer.bind("IRoute<IController>").to(user_route_1.default);
+exports.default = DIContainer;

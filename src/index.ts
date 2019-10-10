@@ -1,7 +1,7 @@
+import "reflect-metadata";
 import Server from './server';
+import DIContainer from './di.container';
 
-const port = parseInt(<string>process.env.PORT, 10) || 4201;
-const server = new Server(port);
-
+const server: Server = DIContainer.resolve<Server>(Server);
 server.configure();
 server.start();

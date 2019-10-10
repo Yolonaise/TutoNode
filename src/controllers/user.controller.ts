@@ -1,9 +1,12 @@
+import "reflect-metadata";
 import express from 'express';
 import ICrud from '../interfaces/crud.interface';
 import User, { IUser } from '../models/user.mode';
 import { validateUserGet, validateUserCreate } from '../validators/user.validator';
 import Boom from 'boom';
+import { injectable } from 'inversify';
 
+@injectable()
 export default class UserController implements ICrud {
     constructor() { }
 

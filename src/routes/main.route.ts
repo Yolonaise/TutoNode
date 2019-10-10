@@ -1,15 +1,19 @@
+import "reflect-metadata";
 import MainController from "../controllers/main.controller";
 import express from "express";
 import interceptApi from "../interceptors/api.interceptor";
 import { IRoute } from "../interfaces/route.interface";
+import { inject, injectable } from "inversify";
+import IController from "../interfaces/controller.interface";
 
-export default class MainRoute implements IRoute<MainController> {
+@injectable()
+export default class MainRoute implements IRoute<IController> {
     endpoint: string = "/server";
-    controller: MainController;
 
-    constructor() {
-        this.controller = new MainController();
+    constructor(@inject(MainController) protected controller: MainController) {
     }
+
+    getController(): MainController { return this.controller; }
 
     configure(): express.Router {
         const router = express.Router();
