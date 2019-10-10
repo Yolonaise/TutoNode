@@ -35,13 +35,12 @@ let Server = class Server {
             else
                 console.log('Mongo db is connected');
         });
+        this.app.use(express_boom_1.default());
         this.app.use(body_parser_1.default.json());
         this.app.use(body_parser_1.default.urlencoded({ extended: false }));
         this.routes.forEach(route => {
             this.app.use(route.endpoint, route.configure());
-            console.log(`Route ${route.endpoint} created`);
         });
-        this.app.use(express_boom_1.default());
     }
     start() {
         this.app.listen(this.port, () => {

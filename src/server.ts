@@ -29,16 +29,13 @@ export default class Server {
             else console.log('Mongo db is connected');
         });
 
+        this.app.use(boom());
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({ extended: false }));
 
         this.routes.forEach(route => {
             this.app.use(route.endpoint, route.configure());
-            console.log(`Route ${route.endpoint} created`);
         });
-
-        this.app.use(boom());
-
     }
 
     start() {
