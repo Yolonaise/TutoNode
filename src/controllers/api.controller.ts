@@ -10,7 +10,8 @@ import { injectable } from 'inversify';
 @injectable()
 export default class ApiController implements ICrud {
 
-    constructor() { }
+    constructor() {
+    }
 
     async get(req: Request, res: Response) {
         let error = validateGetApi(req);

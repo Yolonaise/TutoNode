@@ -10,6 +10,8 @@ import IController from './interfaces/controller.interface';
 import ICrud from './interfaces/crud.interface';
 import GiftRoute from './routes/gift.route';
 import GiftController from './controllers/gift.controller';
+import GameRoute from "./routes/game.route";
+import GameController from "./controllers/game.controller";
 
 var DIContainer = new Container();
 
@@ -17,10 +19,12 @@ DIContainer.bind<IController>(MainController).toSelf();
 DIContainer.bind<ICrud>(ApiController).toSelf();
 DIContainer.bind<ICrud>(UserController).toSelf();
 DIContainer.bind<ICrud>(GiftController).toSelf();
+DIContainer.bind<ICrud>(GameController).toSelf();
 
 DIContainer.bind<MainRoute>("IRoute<IController>").to(MainRoute);
 DIContainer.bind<ApiRoute>("IRoute<IController>").to(ApiRoute);
 DIContainer.bind<UserRoute>("IRoute<IController>").to(UserRoute);
 DIContainer.bind<GiftRoute>("IRoute<IController>").to(GiftRoute);
+DIContainer.bind<GameRoute>("IRoute<IController>").to(GameRoute);
 
 export default DIContainer;

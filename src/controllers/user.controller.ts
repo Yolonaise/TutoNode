@@ -4,11 +4,16 @@ import ICrud from '../interfaces/crud.interface';
 import User, { IUser } from '../models/user.mode';
 import { validateUserGet, validateUserCreate } from '../validators/user.validator';
 import Boom from 'boom';
-import { injectable } from 'inversify';
+import { injectable, multiInject } from 'inversify';
+import { ICrudObserver, ICrudListenner } from "../interfaces/crud-listenner.interface";
 
 @injectable()
-export default class UserController implements ICrud {
-    constructor() { }
+export default class UserController implements ICrud, ICrudObserver {
+    listenners: ICrudListenner[];
+
+    constructor(@multiInject('IUserListenner') listenners: ICrudListenner[]) {
+        this.listenners = listenners;
+    }
 
     async get(req: express.Request, res: express.Response) {
         let error = validateUserGet(req);
@@ -46,5 +51,18 @@ export default class UserController implements ICrud {
 
     async delete(req: express.Request, res: express.Response) {
         return res.boom.notImplemented('Cannot delete user');
+    }
+
+    notifyGet(): void {
+        throw new Error("Method not implemented.");
+    }
+    notifyCreate(): void {
+        throw new Error("Method not implemented.");
+    }
+    notifyDelete(): void {
+        throw new Error("Method not implemented.");
+    }
+    notifyUpdate(): void {
+        throw new Error("Method not implemented.");
     }
 }
