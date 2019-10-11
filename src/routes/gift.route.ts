@@ -8,7 +8,7 @@ import interceptApi from "../interceptors/api.interceptor";
 @injectable()
 export default class GiftRoute implements IRoute<IController> {
     endpoint: string = "/gift";
-    
+
     constructor(@inject(GiftController) private controller: GiftController) { }
 
     getController(): IController { return this.controller; }
@@ -20,7 +20,7 @@ export default class GiftRoute implements IRoute<IController> {
 
         router.get('/:userId', (req: express.Request, res: express.Response) => this.controller.get(req, res));
         router.post('/', (res: express.Request, req: express.Response) => this.controller.create(res, req));
-        router.put('/', (res: express.Request, req: express.Response) => this.controller.update(res, req));
+        router.put('/:giftId', (res: express.Request, req: express.Response) => this.controller.update(res, req));
         router.delete('/:giftId', (res: express.Request, req: express.Response) => this.controller.delete(res, req));
 
         return router;
