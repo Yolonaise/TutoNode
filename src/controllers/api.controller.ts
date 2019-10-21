@@ -22,7 +22,7 @@ export default class ApiController implements ICrud {
             let apis = await Api.find({ email: req.params.email });
             return res.status(200).send({ apikeys: apis });
         } catch (err) {
-            return res.boom.internal('Internal error', err);
+            return res.boom.boomify(err);
         }
     }
 
@@ -39,7 +39,7 @@ export default class ApiController implements ICrud {
             const result = await new Api({ ...req.body, key: generateKey(req.body.applicationName) }).save();
             return res.status(200).send({ api: result });
         } catch (err) {
-            return res.boom.internal('Internal error', err);
+            return res.boom.boomify(err);
         }
     }
 
@@ -56,7 +56,7 @@ export default class ApiController implements ICrud {
             await Api.findOneAndDelete({ applicationName: req.params.applicationName, email: req.params.email });
             return res.status(204).send();
         } catch (err) {
-            return res.boom.internal('Internal error', err);
+            return res.boom.boomify(err);
         }
     }
 }

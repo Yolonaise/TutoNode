@@ -22,10 +22,10 @@ export default class UserRoute implements IRoute<ICrud> {
 
         router.use(interceptApi);
 
-        router.get('/:email', (req: express.Request, res: express.Response) => this.controller.get(req, res));
+        router.get('/:userId', (req: express.Request, res: express.Response) => this.controller.get(req, res));
         router.post('/', (req: express.Request, res: express.Response) => this.controller.create(req, res));
-        router.put('/', (req: express.Request, res: express.Response) => this.controller.update(req, res));
-        router.delete('/', (req: express.Request, res: express.Response) => this.controller.delete(req, res));
+        router.put('/:userId', (req: express.Request, res: express.Response) => this.controller.update(req, res));
+        router.delete('/:userId', (req: express.Request, res: express.Response) => this.controller.delete(req, res));
 
         return router;
     }

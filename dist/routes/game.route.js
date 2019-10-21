@@ -15,30 +15,31 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-require("reflect-metadata");
+const game_controller_1 = __importDefault(require("../controllers/game.controller"));
 const express_1 = __importDefault(require("express"));
-const user_controller_1 = __importDefault(require("../controllers/user.controller"));
-const api_interceptor_1 = __importDefault(require("../interceptors/api.interceptor"));
 const inversify_1 = require("inversify");
-let UserRoute = class UserRoute {
+const api_interceptor_1 = __importDefault(require("../interceptors/api.interceptor"));
+let GameRoute = class GameRoute {
     constructor(controller) {
-        this.endpoint = '/user';
         this.controller = controller;
+        this.endpoint = '/game';
     }
-    getController() { return this.controller; }
+    getController() {
+        return this.controller;
+    }
     configure() {
         const router = express_1.default.Router();
         router.use(api_interceptor_1.default);
-        router.get('/:userId', (req, res) => this.controller.get(req, res));
-        router.post('/', (req, res) => this.controller.create(req, res));
-        router.put('/:userId', (req, res) => this.controller.update(req, res));
-        router.delete('/:userId', (req, res) => this.controller.delete(req, res));
+        router.get('/:gameId', (req, res) => this.controller.get(req, res));
+        router.post('/', (res, req) => this.controller.create(res, req));
+        router.put('/:gameId', (res, req) => this.controller.update(res, req));
+        router.delete('/:gameId', (res, req) => this.controller.delete(res, req));
         return router;
     }
 };
-UserRoute = __decorate([
+GameRoute = __decorate([
     inversify_1.injectable(),
-    __param(0, inversify_1.inject(user_controller_1.default)),
-    __metadata("design:paramtypes", [user_controller_1.default])
-], UserRoute);
-exports.default = UserRoute;
+    __param(0, inversify_1.inject(game_controller_1.default)),
+    __metadata("design:paramtypes", [game_controller_1.default])
+], GameRoute);
+exports.default = GameRoute;

@@ -7,7 +7,7 @@ const boom_1 = __importDefault(require("boom"));
 function validateGetGift(req) {
     if (!req.params)
         return boom_1.default.badRequest('Gift body is empty');
-    if (!req.params.userId)
+    if (!req.params.giftId)
         return boom_1.default.badRequest('userId is not setted');
     return undefined;
 }
@@ -17,8 +17,6 @@ function validateCreateGift(req) {
         return boom_1.default.badRequest('Gift body is empty');
     if (!req.body.name)
         return boom_1.default.badRequest('gift has to be named');
-    if (!req.body.userId)
-        return boom_1.default.badRequest('gift must be linked to a user');
     return undefined;
 }
 exports.validateCreateGift = validateCreateGift;
@@ -31,8 +29,6 @@ function validateUpdateGift(req) {
         return boom_1.default.badRequest('Gift body is empty');
     if (!req.body.name)
         return boom_1.default.badRequest('gift has to be named');
-    if (!req.body.userId)
-        return boom_1.default.badRequest('gift must be linked to a user');
     return undefined;
 }
 exports.validateUpdateGift = validateUpdateGift;

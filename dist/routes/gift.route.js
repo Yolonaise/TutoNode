@@ -28,7 +28,7 @@ let GiftRoute = class GiftRoute {
     configure() {
         const router = express_1.default.Router();
         router.use(api_interceptor_1.default);
-        router.get('/:userId', (req, res) => this.controller.get(req, res));
+        router.get('/:giftId', (req, res) => this.controller.get(req, res));
         router.post('/', (res, req) => this.controller.create(res, req));
         router.put('/:giftId', (res, req) => this.controller.update(res, req));
         router.delete('/:giftId', (res, req) => this.controller.delete(res, req));

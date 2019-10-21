@@ -1,13 +1,15 @@
 import GameController from '../controllers/game.controller';
 import express from 'express';
 import { IRoute } from '../interfaces/route.interface';
-import { inject } from 'inversify';
+import { inject, injectable } from 'inversify';
 import interceptApi from '../interceptors/api.interceptor';
 
+@injectable()
 export default class GameRoute implements IRoute<GameController> {
     endpoint: string = '/game';
 
     constructor(@inject(GameController) private controller: GameController) { }
+
     getController(): GameController {
         return this.controller;
     }

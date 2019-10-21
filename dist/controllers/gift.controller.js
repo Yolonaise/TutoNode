@@ -36,7 +36,7 @@ let GiftController = class GiftController {
                 return res.status(200).send({ gifts: result });
             }
             catch (err) {
-                return res.boom.internal('Internal error', err);
+                return res.boom.boomify(err);
             }
         });
     }
@@ -50,7 +50,7 @@ let GiftController = class GiftController {
                 return res.status(200).send({ gift: result });
             }
             catch (err) {
-                return res.boom.internal('Internal error', err);
+                return res.boom.boomify(err);
             }
         });
     }
@@ -64,7 +64,7 @@ let GiftController = class GiftController {
                 return res.status(200).send({ gift: result });
             }
             catch (err) {
-                return res.boom.internal('Internal error', err);
+                return res.boom.boomify(err);
             }
         });
     }
@@ -78,7 +78,7 @@ let GiftController = class GiftController {
                 return res.status(204).send();
             }
             catch (err) {
-                return res.boom.internal('Internal error', err);
+                return res.boom.boomify(err);
             }
         });
     }

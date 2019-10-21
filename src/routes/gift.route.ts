@@ -18,7 +18,7 @@ export default class GiftRoute implements IRoute<IController> {
 
         router.use(interceptApi);
 
-        router.get('/:userId', (req: express.Request, res: express.Response) => this.controller.get(req, res));
+        router.get('/:giftId', (req: express.Request, res: express.Response) => this.controller.get(req, res));
         router.post('/', (res: express.Request, req: express.Response) => this.controller.create(res, req));
         router.put('/:giftId', (res: express.Request, req: express.Response) => this.controller.update(res, req));
         router.delete('/:giftId', (res: express.Request, req: express.Response) => this.controller.delete(res, req));

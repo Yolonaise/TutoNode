@@ -28,7 +28,8 @@ const api_validator_1 = require("../validators/api.validator");
 const boom_1 = __importDefault(require("boom"));
 const inversify_1 = require("inversify");
 let ApiController = class ApiController {
-    constructor() { }
+    constructor() {
+    }
     get(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             let error = api_validator_1.validateGetApi(req);
@@ -39,7 +40,7 @@ let ApiController = class ApiController {
                 return res.status(200).send({ apikeys: apis });
             }
             catch (err) {
-                return res.boom.internal('Internal error', err);
+                return res.boom.boomify(err);
             }
         });
     }
@@ -56,7 +57,7 @@ let ApiController = class ApiController {
                 return res.status(200).send({ api: result });
             }
             catch (err) {
-                return res.boom.internal('Internal error', err);
+                return res.boom.boomify(err);
             }
         });
     }
@@ -73,7 +74,7 @@ let ApiController = class ApiController {
                 return res.status(204).send();
             }
             catch (err) {
-                return res.boom.internal('Internal error', err);
+                return res.boom.boomify(err);
             }
         });
     }

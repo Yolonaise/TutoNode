@@ -18,7 +18,7 @@ export default class GiftController implements ICrud {
             const result = await Gift.find({ userId: req.params.userId });
             return res.status(200).send({ gifts: result });
         } catch (err) {
-            return res.boom.internal('Internal error', err);
+            return res.boom.boomify(err);
         }
     }
 
@@ -31,7 +31,7 @@ export default class GiftController implements ICrud {
             const result = await new Gift({ ...req.body }).save();
             return res.status(200).send({ gift: result });
         } catch (err) {
-            return res.boom.internal('Internal error', err);
+            return res.boom.boomify(err);
         }
     }
 
@@ -44,7 +44,7 @@ export default class GiftController implements ICrud {
             let result = await Gift.findOneAndUpdate({ _id: req.params.giftId }, { ...req.body }, { new: true });
             return res.status(200).send({ gift: result });
         } catch (err) {
-            return res.boom.internal('Internal error', err);
+            return res.boom.boomify(err);
         }
     }
 
@@ -57,7 +57,7 @@ export default class GiftController implements ICrud {
             await Gift.findOneAndDelete({ _id: req.params.giftId });
             return res.status(204).send();
         } catch (err) {
-            return res.boom.internal('Internal error', err);
+            return res.boom.boomify(err);
         }
     }
 }
