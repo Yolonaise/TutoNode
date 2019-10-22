@@ -24,65 +24,59 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const game_user_model_1 = __importDefault(require("../models/game-user.model"));
 const inversify_1 = require("inversify");
-const game_validator_1 = require("../validators/game.validator");
-const game_service_1 = __importDefault(require("../services/game.service"));
-let GameController = class GameController {
-    constructor(service) {
-        this.service = service;
+const user_service_1 = __importDefault(require("./user.service"));
+const game_service_1 = __importDefault(require("./game.service"));
+let GameUserService = class GameUserService {
+    constructor(userService, gameService) {
+        this.userService = userService;
+        this.gameService = gameService;
     }
-    get(req, res) {
+    linkUserToGame(userId, gameId) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                game_validator_1.validateGetGame(req);
-                let game = yield this.service.getGame(req.params.gameId);
-                return res.status(200).send({ game: game });
-            }
-            catch (err) {
-                return res.boom.boomify(err);
-            }
+            if (yield game_user_model_1.default.exists({ gameId: gameId, userId: userId }))
+                return;
+            return yield new game_user_model_1.default({ gameId: gameId, userId: userId }).save();
         });
     }
-    create(req, res) {
+    unlinkUserToGame(userId, gameId) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                game_validator_1.validateCreateGame(req);
-                let game = yield this.service.createGame(req.body);
-                return res.status(200).send({ game: game });
-            }
-            catch (err) {
-                return res.boom.boomify(err);
-            }
+            if (!(yield game_user_model_1.default.exists({ gameId: gameId, userId: userId })))
+                return;
+            return yield game_user_model_1.default.findOneAndDelete({ gameId: gameId, userId: userId });
         });
     }
-    update(req, res) {
+    getUsers(gameId) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                game_validator_1.validateUpdateGame(req);
-                let game = yield this.service.updateGame(req.params.gameId, req.body);
-                return res.status(200).send({ game: game });
-            }
-            catch (err) {
-                return res.boom.boomify(err);
-            }
+            const result = [];
+            (yield game_user_model_1.default.find({ gameId: gameId })).forEach((element) => __awaiter(this, void 0, void 0, function* () {
+                let u = yield this.userService.getUser(element.userid);
+                if (u) {
+                    result.push(u);
+                }
+            }));
+            return result;
         });
     }
-    delete(req, res) {
+    getGames(userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                game_validator_1.validateDeleteGame(req);
-                yield this.service.deleteGame(req.params.gameId);
-                return res.status(204).send();
-            }
-            catch (err) {
-                return res.boom.boomify(err);
-            }
+            let result = [];
+            (yield game_user_model_1.default.find({ userId: userId })).forEach((element) => __awaiter(this, void 0, void 0, function* () {
+                let u = yield this.gameService.getGame(element.gameid);
+                if (u) {
+                    result.push(u);
+                }
+            }));
+            return result;
         });
     }
 };
-GameController = __decorate([
+GameUserService = __decorate([
     inversify_1.injectable(),
-    __param(0, inversify_1.inject(game_service_1.default)),
-    __metadata("design:paramtypes", [game_service_1.default])
-], GameController);
-exports.default = GameController;
+    __param(0, inversify_1.inject(user_service_1.default)),
+    __param(1, inversify_1.inject(game_service_1.default)),
+    __metadata("design:paramtypes", [user_service_1.default,
+        game_service_1.default])
+], GameUserService);
+exports.default = GameUserService;

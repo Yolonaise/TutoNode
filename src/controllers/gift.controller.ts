@@ -1,60 +1,49 @@
 import ICrud from '../interfaces/crud.interface';
 import express from 'express';
-import { injectable } from 'inversify';
+import { injectable, inject } from 'inversify';
 import { validateGetGift, validateDeleteGift, validateCreateGift, validateUpdateGift } from '../validators/gift.validator';
 import Gift from '../models/gift.model';
+import GiftService from '../services/gift.service';
 
 @injectable()
 export default class GiftController implements ICrud {
 
-    constructor() { }
+    constructor(@inject(GiftService) private service: GiftService) { }
 
     async get(req: express.Request, res: express.Response) {
-        const error = validateGetGift(req)
-        if (error)
-            return res.boom.boomify(error);
-
         try {
-            const result = await Gift.find({ userId: req.params.userId });
-            return res.status(200).send({ gifts: result });
+            validateGetGift(req);
+            const gift = await this.service.getGift(req.params.userId);
+            return res.status(200).send({ gifts: gift });
         } catch (err) {
             return res.boom.boomify(err);
         }
     }
 
     async create(req: express.Request, res: express.Response) {
-        const error = validateCreateGift(req);
-        if (error)
-            return res.boom.boomify(error);
-
         try {
-            const result = await new Gift({ ...req.body }).save();
-            return res.status(200).send({ gift: result });
+            validateCreateGift(req);
+            const gift = this.service.createGift(req.body);
+            return res.status(200).send({ gift: gift });
         } catch (err) {
             return res.boom.boomify(err);
         }
     }
 
     async update(req: express.Request, res: express.Response) {
-        const error = validateUpdateGift(req)
-        if (error)
-            return res.boom.boomify(error);
-
         try {
-            let result = await Gift.findOneAndUpdate({ _id: req.params.giftId }, { ...req.body }, { new: true });
-            return res.status(200).send({ gift: result });
+            validateUpdateGift(req);
+            let gift = this.service.updateGift(req.params.giftId, req.body);
+            return res.status(200).send({ gift: gift });
         } catch (err) {
             return res.boom.boomify(err);
         }
     }
 
     async delete(req: express.Request, res: express.Response) {
-        const error = validateDeleteGift(req)
-        if (error)
-            return res.boom.boomify(error);
-
         try {
-            await Gift.findOneAndDelete({ _id: req.params.giftId });
+            validateDeleteGift(req);
+            await this.service.deleteGift(req.params.giftId);
             return res.status(204).send();
         } catch (err) {
             return res.boom.boomify(err);

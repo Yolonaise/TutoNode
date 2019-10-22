@@ -8,5 +8,5 @@ const GameUserGiftSchema = new mongoose_1.Schema({
     giftid: { type: String, required: true }
 });
 // Export the model
-const GameUser = mongoose_1.model('gameUser', GameUserGiftSchema);
-exports.default = GameUser;
+const GameUserGift = mongoose_1.model('gameUser', GameUserGiftSchema);
+exports.default = GameUserGift;

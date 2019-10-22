@@ -6,35 +6,35 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const boom_1 = __importDefault(require("boom"));
 function validateUserGet(req) {
     if (req.params === undefined)
-        return boom_1.default.badRequest('request parameters are empty');
+        throw boom_1.default.badRequest('request parameters are empty');
     if (req.params.userId === undefined)
-        return boom_1.default.badRequest('No user identity sent');
-    return undefined;
+        throw boom_1.default.badRequest('No user identity sent');
 }
 exports.validateUserGet = validateUserGet;
 function validateUserCreate(req) {
     if (req.body === undefined)
-        return boom_1.default.badRequest('request body is empty');
+        throw boom_1.default.badRequest('request body is empty');
     if (req.body.email === undefined)
-        return boom_1.default.badRequest('Email is empty');
+        throw boom_1.default.badRequest('Email is empty');
     if (req.body.name === undefined)
-        return boom_1.default.badRequest('Name is empty');
-    return undefined;
+        throw boom_1.default.badRequest('Name is empty');
 }
 exports.validateUserCreate = validateUserCreate;
 function validateUpdateUser(req) {
     if (req.params === undefined)
-        return boom_1.default.badRequest('request parameters are empty');
+        throw boom_1.default.badRequest('request parameters are empty');
     if (req.params.userId === undefined)
-        return boom_1.default.badRequest('No user identity sent');
+        throw boom_1.default.badRequest('No user identity sent');
     if (req.body.email === undefined)
-        return boom_1.default.badRequest('Email is empty');
+        throw boom_1.default.badRequest('Email is empty');
     if (req.body.name === undefined)
-        return boom_1.default.badRequest('Name is empty');
-    return undefined;
+        throw boom_1.default.badRequest('Name is empty');
 }
 exports.validateUpdateUser = validateUpdateUser;
 function validateUserDelete(req) {
-    return undefined;
+    if (req.params === undefined)
+        throw boom_1.default.badRequest('request parameters are empty');
+    if (req.params.userId === undefined)
+        throw boom_1.default.badRequest('No user identity sent');
 }
 exports.validateUserDelete = validateUserDelete;

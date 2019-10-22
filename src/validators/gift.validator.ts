@@ -3,46 +3,38 @@ import Boom from 'boom';
 
 export function validateGetGift(req: express.Request) {
     if (!req.params)
-        return Boom.badRequest('Gift body is empty');
+        throw Boom.badRequest('Gift body is empty');
 
     if (!req.params.giftId)
-        return Boom.badRequest('userId is not setted');
-
-    return undefined;
+        throw Boom.badRequest('userId is not setted');
 }
 
 export function validateCreateGift(req: express.Request) {
     if (!req.body)
-        return Boom.badRequest('Gift body is empty');
+        throw Boom.badRequest('Gift body is empty');
 
     if (!req.body.name)
-        return Boom.badRequest('gift has to be named');
-
-    return undefined;
+        throw Boom.badRequest('gift has to be named');
 }
 
 export function validateUpdateGift(req: express.Request) {
     if (!req.params)
-        return Boom.badRequest('Gift body is empty');
+        throw Boom.badRequest('Gift body is empty');
 
     if (!req.params.giftId)
-        return Boom.badRequest('giftId is not setted');
+        throw Boom.badRequest('giftId is not setted');
 
     if (!req.body)
-        return Boom.badRequest('Gift body is empty');
+        throw Boom.badRequest('Gift body is empty');
 
     if (!req.body.name)
-        return Boom.badRequest('gift has to be named');
-
-    return undefined;
+        throw Boom.badRequest('gift has to be named');
 }
 
 export function validateDeleteGift(req: express.Request) {
     if (!req.params)
-        return Boom.badRequest('Gift body is empty');
+        throw Boom.badRequest('Gift body is empty');
 
     if (!req.params.giftId)
-        return Boom.badRequest('giftId is not setted');
-
-    return undefined;
+        throw Boom.badRequest('giftId is not setted');
 }

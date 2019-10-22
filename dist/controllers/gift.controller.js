@@ -8,6 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -23,17 +26,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const inversify_1 = require("inversify");
 const gift_validator_1 = require("../validators/gift.validator");
-const gift_model_1 = __importDefault(require("../models/gift.model"));
+const gift_service_1 = __importDefault(require("../services/gift.service"));
 let GiftController = class GiftController {
-    constructor() { }
+    constructor(service) {
+        this.service = service;
+    }
     get(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const error = gift_validator_1.validateGetGift(req);
-            if (error)
-                return res.boom.boomify(error);
             try {
-                const result = yield gift_model_1.default.find({ userId: req.params.userId });
-                return res.status(200).send({ gifts: result });
+                gift_validator_1.validateGetGift(req);
+                const gift = yield this.service.getGift(req.params.userId);
+                return res.status(200).send({ gifts: gift });
             }
             catch (err) {
                 return res.boom.boomify(err);
@@ -42,12 +45,10 @@ let GiftController = class GiftController {
     }
     create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const error = gift_validator_1.validateCreateGift(req);
-            if (error)
-                return res.boom.boomify(error);
             try {
-                const result = yield new gift_model_1.default(Object.assign({}, req.body)).save();
-                return res.status(200).send({ gift: result });
+                gift_validator_1.validateCreateGift(req);
+                const gift = this.service.createGift(req.body);
+                return res.status(200).send({ gift: gift });
             }
             catch (err) {
                 return res.boom.boomify(err);
@@ -56,12 +57,10 @@ let GiftController = class GiftController {
     }
     update(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const error = gift_validator_1.validateUpdateGift(req);
-            if (error)
-                return res.boom.boomify(error);
             try {
-                let result = yield gift_model_1.default.findOneAndUpdate({ _id: req.params.giftId }, Object.assign({}, req.body), { new: true });
-                return res.status(200).send({ gift: result });
+                gift_validator_1.validateUpdateGift(req);
+                let gift = this.service.updateGift(req.params.giftId, req.body);
+                return res.status(200).send({ gift: gift });
             }
             catch (err) {
                 return res.boom.boomify(err);
@@ -70,11 +69,9 @@ let GiftController = class GiftController {
     }
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const error = gift_validator_1.validateDeleteGift(req);
-            if (error)
-                return res.boom.boomify(error);
             try {
-                yield gift_model_1.default.findOneAndDelete({ _id: req.params.giftId });
+                gift_validator_1.validateDeleteGift(req);
+                yield this.service.deleteGift(req.params.giftId);
                 return res.status(204).send();
             }
             catch (err) {
@@ -85,6 +82,7 @@ let GiftController = class GiftController {
 };
 GiftController = __decorate([
     inversify_1.injectable(),
-    __metadata("design:paramtypes", [])
+    __param(0, inversify_1.inject(gift_service_1.default)),
+    __metadata("design:paramtypes", [gift_service_1.default])
 ], GiftController);
 exports.default = GiftController;

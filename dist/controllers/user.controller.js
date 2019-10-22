@@ -8,6 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -22,19 +25,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 require("reflect-metadata");
-const user_mode_1 = __importDefault(require("../models/user.mode"));
 const user_validator_1 = require("../validators/user.validator");
 const inversify_1 = require("inversify");
+const user_service_1 = __importDefault(require("../services/user.service"));
 let UserController = class UserController {
-    constructor() {
+    constructor(service) {
+        this.service = service;
     }
     get(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const error = user_validator_1.validateUserGet(req);
-            if (error)
-                return res.boom.boomify(error);
             try {
-                let u = yield user_mode_1.default.findById(req.params.userId);
+                user_validator_1.validateUserGet(req);
+                let u = yield this.service.getUser(req.params.userId);
                 return res.status(200).send({ user: u });
             }
             catch (err) {
@@ -44,15 +46,10 @@ let UserController = class UserController {
     }
     create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const error = user_validator_1.validateUserCreate(req);
-            if (error)
-                return res.boom.boomify(error);
             try {
-                let u = yield user_mode_1.default.findOne({ email: req.body.email });
-                if (u)
-                    return res.boom.conflict(`User with email ${req.body.email} already exits`);
-                const result = yield new user_mode_1.default(req.body).save();
-                return res.status(200).send({ user: result });
+                user_validator_1.validateUserCreate(req);
+                let u = yield this.service.createUser(req.body);
+                return res.status(200).send({ user: u });
             }
             catch (err) {
                 return res.boom.boomify(err);
@@ -61,12 +58,10 @@ let UserController = class UserController {
     }
     update(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const error = user_validator_1.validateUpdateUser(req);
-            if (error)
-                return res.boom.boomify(error);
             try {
-                let result = yield user_mode_1.default.findByIdAndUpdate(req.params.userId, Object.assign({}, req.body), { new: true });
-                return res.status(200).send({ user: result });
+                user_validator_1.validateUpdateUser(req);
+                let u = yield this.service.updateUser(req.params.userId, req.body);
+                return res.status(200).send({ user: u });
             }
             catch (err) {
                 return res.boom.boomify(err);
@@ -75,11 +70,9 @@ let UserController = class UserController {
     }
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const error = user_validator_1.validateUserDelete(req);
-            if (error)
-                return res.boom.boomify(error);
             try {
-                yield user_mode_1.default.findByIdAndDelete(req.params.userId);
+                user_validator_1.validateUserDelete(req);
+                yield this.service.deleteUser(req.params.userId);
                 return res.status(204).send();
             }
             catch (err) {
@@ -90,6 +83,7 @@ let UserController = class UserController {
 };
 UserController = __decorate([
     inversify_1.injectable(),
-    __metadata("design:paramtypes", [])
+    __param(0, inversify_1.inject(user_service_1.default)),
+    __metadata("design:paramtypes", [user_service_1.default])
 ], UserController);
 exports.default = UserController;

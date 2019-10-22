@@ -6,47 +6,43 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const boom_1 = __importDefault(require("boom"));
 function validateGetGame(req) {
     if (!req.params)
-        return boom_1.default.badRequest('Request parameters are empty');
+        throw boom_1.default.badRequest('Request parameters are empty');
     if (!req.params)
-        return boom_1.default.badRequest('Game parameter is empty');
-    return undefined;
+        throw boom_1.default.badRequest('Game parameter is empty');
 }
 exports.validateGetGame = validateGetGame;
 function validateCreateGame(req) {
     let game = req.body;
     if (!game)
-        return boom_1.default.badRequest('Request body is empty');
+        throw boom_1.default.badRequest('Request body is empty');
     if (!game.name)
-        return boom_1.default.badRequest('Game must have a name');
+        throw boom_1.default.badRequest('Game must have a name');
     if (!game.price)
-        return boom_1.default.badRequest('Game must have a price');
+        throw boom_1.default.badRequest('Game must have a price');
     if (!game.admin)
-        return boom_1.default.badRequest('Game must have an admin user');
-    return undefined;
+        throw boom_1.default.badRequest('Game must have an admin user');
 }
 exports.validateCreateGame = validateCreateGame;
 function validateUpdateGame(req) {
     if (!req.params)
-        return boom_1.default.badRequest('Request parameters are empty');
+        throw boom_1.default.badRequest('Request parameters are empty');
     if (!req.params)
-        return boom_1.default.badRequest('Game parameter is empty');
+        throw boom_1.default.badRequest('Game parameter is empty');
     let game = req.body;
     if (!game)
-        return boom_1.default.badRequest('Request body is empty');
+        throw boom_1.default.badRequest('Request body is empty');
     if (!game.name)
-        return boom_1.default.badRequest('Game must have a name');
+        throw boom_1.default.badRequest('Game must have a name');
     if (!game.price)
-        return boom_1.default.badRequest('Game must have a price');
+        throw boom_1.default.badRequest('Game must have a price');
     if (!game.admin)
-        return boom_1.default.badRequest('Game must have an admin user');
-    return undefined;
+        throw boom_1.default.badRequest('Game must have an admin user');
 }
 exports.validateUpdateGame = validateUpdateGame;
 function validateDeleteGame(req) {
     if (!req.params)
-        return boom_1.default.badRequest('Request parameters are empty');
+        throw boom_1.default.badRequest('Request parameters are empty');
     if (!req.params)
-        return boom_1.default.badRequest('Game parameter is empty');
-    return undefined;
+        throw boom_1.default.badRequest('Game parameter is empty');
 }
 exports.validateDeleteGame = validateDeleteGame;
