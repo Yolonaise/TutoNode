@@ -24,57 +24,64 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const game_user_model_1 = __importDefault(require("../models/game-user.model"));
+const game_user_gift_model_1 = __importDefault(require("../models/game-user-gift.model"));
 const inversify_1 = require("inversify");
+const gift_service_1 = __importDefault(require("./gift.service"));
 const user_service_1 = __importDefault(require("./user.service"));
 const game_service_1 = __importDefault(require("./game.service"));
-let GameUserService = class GameUserService {
-    constructor(userService, gameService) {
-        this.userService = userService;
-        this.gameService = gameService;
+let GameUserGiftService = class GameUserGiftService {
+    constructor(giftService, userService, gameService) {
+        this.giftService = giftService;
+        gameService.register(this);
+        userService.register(this);
     }
-    linkUserToGame(userId, gameId) {
+    linkGiftToUserGame(giftId, userId, gameId) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (yield game_user_model_1.default.exists({ gameId: gameId, userId: userId }))
+            if (yield game_user_gift_model_1.default.exists({ giftId: giftId, gameId: gameId, userId: userId }))
                 return;
-            return yield new game_user_model_1.default({ gameId: gameId, userId: userId }).save();
+            return yield new game_user_gift_model_1.default({ giftId: giftId, gameId: gameId, userId: userId }).save();
         });
     }
-    unlinkUserToGame(userId, gameId) {
+    unlinkGiftToUserGame(giftId, userId, gameId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield game_user_model_1.default.findOneAndDelete({ gameId: gameId, userId: userId });
+            return yield game_user_gift_model_1.default.findOneAndDelete({ giftId: giftId, gameId: gameId, userId: userId });
         });
     }
-    getUsers(gameId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const result = [];
-            (yield game_user_model_1.default.find({ gameId: gameId })).forEach((element) => __awaiter(this, void 0, void 0, function* () {
-                let u = yield this.userService.getUser(element.userid);
-                if (u) {
-                    result.push(u);
-                }
-            }));
-            return result;
-        });
-    }
-    getGames(userId) {
+    getGiftByGame(gameId) {
         return __awaiter(this, void 0, void 0, function* () {
             let result = [];
-            (yield game_user_model_1.default.find({ userId: userId })).forEach((element) => __awaiter(this, void 0, void 0, function* () {
-                let u = yield this.gameService.getGame(element.gameid);
-                if (u) {
-                    result.push(u);
-                }
+            (yield game_user_gift_model_1.default.find({ gameId: gameId })).forEach((element) => __awaiter(this, void 0, void 0, function* () {
+                let g = yield this.giftService.getGift(element.giftid);
+                if (g)
+                    result.push(g);
             }));
             return result;
         });
     }
+    getGiftByUser(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let result = [];
+            (yield game_user_gift_model_1.default.find({ userId: userId })).forEach((element) => __awaiter(this, void 0, void 0, function* () {
+                let g = yield this.giftService.getGift(element.giftid);
+                if (g)
+                    result.push(g);
+            }));
+            return result;
+        });
+    }
+    onGameCreated(game) { console.log("slkfjsklfj"); }
+    onGameUpdated(oldGame, newGame) { }
+    onGameDeleted(gameId) { }
+    onUserCreated(user) { console.log("slkfjsklfj"); }
+    onUserUpdated(oldUser, newUser) { console.log("slkfjsklfj"); }
+    onUserDeleted(userId) { }
 };
-GameUserService = __decorate([
-    inversify_1.injectable(),
-    __param(0, inversify_1.inject(user_service_1.default)),
-    __param(1, inversify_1.inject(game_service_1.default)),
-    __metadata("design:paramtypes", [user_service_1.default,
+GameUserGiftService = __decorate([
+    __param(0, inversify_1.inject(gift_service_1.default)),
+    __param(1, inversify_1.inject(user_service_1.default)),
+    __param(2, inversify_1.inject(game_service_1.default)),
+    __metadata("design:paramtypes", [gift_service_1.default,
+        user_service_1.default,
         game_service_1.default])
-], GameUserService);
-exports.default = GameUserService;
+], GameUserGiftService);
+exports.default = GameUserGiftService;

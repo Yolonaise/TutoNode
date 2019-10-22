@@ -20,7 +20,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const inversify_1 = require("inversify");
 const game_model_1 = __importDefault(require("../models/game.model"));
-let GameService = class GameService {
+const service_observer_1 = require("../interfaces/observers/service.observer");
+let GameService = class GameService extends service_observer_1.Observer {
     getGame(gameId) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield game_model_1.default.findById(gameId);
@@ -28,17 +29,22 @@ let GameService = class GameService {
     }
     createGame(game) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield new game_model_1.default(game).save();
+            const result = yield new game_model_1.default(game).save();
+            this.listeners.forEach(l => { l.onGameCreated(result); });
+            return result;
         });
     }
     updateGame(gameId, game) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield game_model_1.default.findByIdAndUpdate(gameId, Object.assign({}, game), { new: true });
+            const result = yield game_model_1.default.findByIdAndUpdate(gameId, Object.assign({}, game), { new: true });
+            this.listeners.forEach(l => { l.onGameUpdated(game, result); });
+            return result;
         });
     }
     deleteGame(gameId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield game_model_1.default.findByIdAndDelete(gameId);
+            yield game_model_1.default.findByIdAndDelete(gameId);
+            this.listeners.forEach(l => { l.onGameDeleted(gameId); });
         });
     }
 };

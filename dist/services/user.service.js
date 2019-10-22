@@ -21,7 +21,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const inversify_1 = require("inversify");
 const user_mode_1 = __importDefault(require("../models/user.mode"));
 const Boom = require("boom");
-let UserService = class UserService {
+const service_observer_1 = require("../interfaces/observers/service.observer");
+let UserService = class UserService extends service_observer_1.Observer {
     getUser(userId) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield user_mode_1.default.findById(userId);
@@ -32,17 +33,22 @@ let UserService = class UserService {
             let u = yield user_mode_1.default.exists({ email: user.email });
             if (u)
                 throw Boom.conflict(`User with email ${user.email} already exits`);
-            return yield new user_mode_1.default(user).save();
+            let result = yield new user_mode_1.default(user).save();
+            this.listeners.forEach(l => { l.onUserCreated(result); });
+            return result;
         });
     }
     updateUser(userId, user) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield user_mode_1.default.findByIdAndUpdate(userId, Object.assign({}, user), { new: true });
+            let result = yield user_mode_1.default.findByIdAndUpdate(userId, Object.assign({}, user), { new: true });
+            this.listeners.forEach(l => { l.onUserUpdated(user, result); });
+            return result;
         });
     }
     deleteUser(userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield user_mode_1.default.findByIdAndDelete(userId);
+            yield user_mode_1.default.findByIdAndDelete(userId);
+            this.listeners.forEach(l => { l.onUserDeleted(userId); });
         });
     }
 };

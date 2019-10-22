@@ -20,9 +20,6 @@ export default class GameUserService {
     }
 
     async unlinkUserToGame(userId: string, gameId: string) {
-        if (!await GameUser.exists({ gameId: gameId, userId: userId }))
-            return;
-
         return await GameUser.findOneAndDelete({ gameId: gameId, userId: userId });
     }
 
