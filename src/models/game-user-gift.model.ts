@@ -13,5 +13,5 @@ const GameUserGiftSchema = new Schema({
 });
 
 // Export the model
-const GameUserGift = model<IGameUserGift>('gameUser', GameUserGiftSchema);
+const GameUserGift = model<IGameUserGift>('gameUserGift', GameUserGiftSchema);
 export default GameUserGift;

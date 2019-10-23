@@ -1,16 +1,14 @@
 import GameUser from "../models/game-user.model";
 import { IUser } from "../models/user.mode";
-import { injectable, inject } from "inversify";
-import UserService from "./user.service";
-import GameService from "./game.service";
+import { injectable } from "inversify";
 import { IGame } from "../models/game.model";
+import { IGameListenner } from "../interfaces/listeners/game.service.listener";
+import { IUserListenner } from "../interfaces/listeners/user.service.listener";
 
 @injectable()
-export default class GameUserService {
+export default class GameUserService implements IGameListenner, IUserListenner {
 
-    constructor(
-        @inject(UserService) private userService: UserService,
-        @inject(GameService) private gameService: GameService) { }
+    constructor() { }
 
     async linkUserToGame(userId: string, gameId: string) {
         if (await GameUser.exists({ gameId: gameId, userId: userId }))
@@ -23,28 +21,19 @@ export default class GameUserService {
         return await GameUser.findOneAndDelete({ gameId: gameId, userId: userId });
     }
 
-    async getUsers(gameId: string) {
-        const result: IUser[] = [];
-        (await GameUser.find({ gameId: gameId })).forEach(async (element) => {
-            let u = await this.userService.getUser(element.userid);
-            if (u) {
-                result.push(u);
-            }
-        });
-
-        return result;
+    async getUserIds(gameId: string) {
+        return await GameUser.find({ gameId: gameId });
     }
 
-    async getGames(userId: string) {
-        let result: IGame[] = [];
-
-        (await GameUser.find({ userId: userId })).forEach(async (element) => {
-            let u = await this.gameService.getGame(element.gameid);
-            if (u) {
-                result.push(u);
-            }
-        });
-
-        return result;
+    async getGameIds(userId: string) {
+        return await GameUser.find({ userId: userId })
     }
+
+    onUserCreated(user: IUser) { }
+    onUserUpdated(oldUser: IUser, newUser: IUser) { }
+    onUserDeleted(userId: string) { }
+
+    onGameCreated(game: IGame) { }
+    onGameUpdated(oldGame: IGame, newGame: IGame) { }
+    onGameDeleted(gameId: string) { }
 }

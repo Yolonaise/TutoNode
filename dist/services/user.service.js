@@ -5,6 +5,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -22,7 +28,12 @@ const inversify_1 = require("inversify");
 const user_mode_1 = __importDefault(require("../models/user.mode"));
 const Boom = require("boom");
 const service_observer_1 = require("../interfaces/observers/service.observer");
+const game_user_service_1 = __importDefault(require("./game-user.service"));
 let UserService = class UserService extends service_observer_1.Observer {
+    constructor(gameUserService, listeners) {
+        super(listeners);
+        this.gameUserService = gameUserService;
+    }
     getUser(userId) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield user_mode_1.default.findById(userId);
@@ -51,8 +62,20 @@ let UserService = class UserService extends service_observer_1.Observer {
             this.listeners.forEach(l => { l.onUserDeleted(userId); });
         });
     }
+    getAllUsersByGame(gameid) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let result = [];
+            (yield this.gameUserService.getGameIds(gameid)).forEach((gu) => __awaiter(this, void 0, void 0, function* () {
+                result.push(yield this.getUser(gu.gameid));
+            }));
+            return result;
+        });
+    }
 };
 UserService = __decorate([
-    inversify_1.injectable()
+    inversify_1.injectable(),
+    __param(0, inversify_1.inject(game_user_service_1.default)),
+    __param(1, inversify_1.multiInject("IUserListener")),
+    __metadata("design:paramtypes", [game_user_service_1.default, Array])
 ], UserService);
 exports.default = UserService;
