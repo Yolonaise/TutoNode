@@ -58,6 +58,24 @@ let GiftService = class GiftService extends service_observer_1.Observer {
             this.listeners.forEach(l => { l.onGiftDeleted(giftId); });
         });
     }
+    getAllGiftByUser(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let result = [];
+            (yield this.gameUserGiftService.getGiftIdsByUser(userId)).forEach((gug) => __awaiter(this, void 0, void 0, function* () {
+                result.push(yield this.getGift(gug.giftid));
+            }));
+            return result;
+        });
+    }
+    getAllGiftByGame(gameId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let result = [];
+            (yield this.gameUserGiftService.getGiftIdsByUser(gameId)).forEach((gug) => __awaiter(this, void 0, void 0, function* () {
+                result.push(yield this.getGift(gug.giftid));
+            }));
+            return result;
+        });
+    }
 };
 GiftService = __decorate([
     inversify_1.injectable(),

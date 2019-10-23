@@ -80,6 +80,17 @@ let UserController = class UserController {
             }
         });
     }
+    getAllUserByGames(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                let result = yield this.service.getAllUsersByGame(req.params.userId);
+                return res.status(200).send({ users: result });
+            }
+            catch (err) {
+                return res.boom.boomify(err);
+            }
+        });
+    }
 };
 UserController = __decorate([
     inversify_1.injectable(),

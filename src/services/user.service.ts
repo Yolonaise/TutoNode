@@ -1,6 +1,6 @@
 import { injectable, multiInject, inject } from "inversify";
 import User, { IUser } from "../models/user.mode";
-import Boom = require("boom");
+import Boom from 'boom';
 import { Observer } from "../interfaces/observers/service.observer";
 import { IUserListenner } from "../interfaces/listeners/user.service.listener";
 import GameUserService from "./game-user.service";

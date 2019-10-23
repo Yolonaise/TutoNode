@@ -3,10 +3,12 @@ import express from "express";
 import { injectable, inject } from "inversify";
 import { validateGetGame, validateUpdateGame, validateDeleteGame, validateCreateGame } from "../validators/game.validator";
 import GameService from "../services/game.service";
+import GameUserService from "../services/game-user.service";
 
 @injectable()
 export default class GameController implements ICrud {
-    constructor(@inject(GameService) private service: GameService) { }
+    constructor(
+        @inject(GameService) private service: GameService) { }
 
     async get(req: express.Request, res: express.Response) {
         try {
@@ -43,6 +45,15 @@ export default class GameController implements ICrud {
             validateDeleteGame(req);
             await this.service.deleteGame(req.params.gameId);
             return res.status(204).send();
+        } catch (err) {
+            return res.boom.boomify(err);
+        }
+    }
+
+    async getAllGamesByUser(req: express.Request, res: express.Response) {
+        try {
+            let result = this.service.getAllGamesByUser(req.params.userId);
+            return res.status(200).send({ games: result });
         } catch (err) {
             return res.boom.boomify(err);
         }

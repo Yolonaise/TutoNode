@@ -26,7 +26,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const inversify_1 = require("inversify");
 const user_mode_1 = __importDefault(require("../models/user.mode"));
-const Boom = require("boom");
+const boom_1 = __importDefault(require("boom"));
 const service_observer_1 = require("../interfaces/observers/service.observer");
 const game_user_service_1 = __importDefault(require("./game-user.service"));
 let UserService = class UserService extends service_observer_1.Observer {
@@ -43,7 +43,7 @@ let UserService = class UserService extends service_observer_1.Observer {
         return __awaiter(this, void 0, void 0, function* () {
             let u = yield user_mode_1.default.exists({ email: user.email });
             if (u)
-                throw Boom.conflict(`User with email ${user.email} already exits`);
+                throw boom_1.default.conflict(`User with email ${user.email} already exits`);
             let result = yield new user_mode_1.default(user).save();
             this.listeners.forEach(l => { l.onUserCreated(result); });
             return result;
