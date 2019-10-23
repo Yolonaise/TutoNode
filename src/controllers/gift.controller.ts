@@ -49,4 +49,22 @@ export default class GiftController implements ICrud {
             return res.boom.boomify(err);
         }
     }
+
+    async getAllGiftByUser(req: express.Request, res: express.Response) {
+        try {
+            await this.service.getAllGiftByUser(req.params.userId);
+            return res.status(204).send();
+        } catch (err) {
+            return res.boom.boomify(err);
+        }
+    }
+    
+    async getAllGiftByGame(req: express.Request, res: express.Response) {
+        try {
+            await this.service.getAllGiftByUser(req.params.gameId);
+            return res.status(204).send();
+        } catch (err) {
+            return res.boom.boomify(err);
+        }
+    }
 }

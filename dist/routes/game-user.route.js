@@ -15,32 +15,27 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const game_controller_1 = __importDefault(require("../controllers/game.controller"));
+const game_user_controller_1 = __importDefault(require("../controllers/game-user.controller"));
 const express_1 = __importDefault(require("express"));
 const inversify_1 = require("inversify");
-const api_interceptor_1 = __importDefault(require("../interceptors/api.interceptor"));
-let GameRoute = class GameRoute {
+let GameUserRoute = class GameUserRoute {
     constructor(controller) {
         this.controller = controller;
-        this.endpoint = '/game';
+        this.endpoint = "/user";
     }
     getController() {
         return this.controller;
     }
     configure() {
-        const router = express_1.default.Router();
-        router.use(api_interceptor_1.default);
-        router.get('/:gameId', (req, res) => this.controller.get(req, res));
-        router.post('/', (res, req) => this.controller.create(res, req));
-        router.put('/:gameId', (res, req) => this.controller.update(res, req));
-        router.delete('/:gameId', (res, req) => this.controller.delete(res, req));
-        router.get('/byuser/:userId', (req, res) => this.controller.getAllGamesByUser(req, res));
+        let router = express_1.default.Router();
+        router.post('/:userId', (res, req) => this.controller.create(res, req));
+        router.delete('/:userId', (res, req) => this.controller.delete(res, req));
         return router;
     }
 };
-GameRoute = __decorate([
+GameUserRoute = __decorate([
     inversify_1.injectable(),
-    __param(0, inversify_1.inject(game_controller_1.default)),
-    __metadata("design:paramtypes", [game_controller_1.default])
-], GameRoute);
-exports.default = GameRoute;
+    __param(0, inversify_1.inject(game_user_controller_1.default)),
+    __metadata("design:paramtypes", [game_user_controller_1.default])
+], GameUserRoute);
+exports.default = GameUserRoute;

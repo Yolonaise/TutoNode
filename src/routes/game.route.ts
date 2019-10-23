@@ -24,7 +24,7 @@ export default class GameRoute implements IRoute<GameController> {
         router.put('/:gameId', (res: express.Request, req: express.Response) => this.controller.update(res, req));
         router.delete('/:gameId', (res: express.Request, req: express.Response) => this.controller.delete(res, req));
 
-        router.get('/:userId',  (req: express.Request, res: express.Response) => this.controller.getAllGamesByUser(req, res));
+        router.get('/byuser/:userId',  (req: express.Request, res: express.Response) => this.controller.getAllGamesByUser(req, res));
         
         return router;
     }

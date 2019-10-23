@@ -23,6 +23,9 @@ export default class GiftRoute implements IRoute<IController> {
         router.put('/:giftId', (res: express.Request, req: express.Response) => this.controller.update(res, req));
         router.delete('/:giftId', (res: express.Request, req: express.Response) => this.controller.delete(res, req));
 
+        router.get('/byuser/:userId', (res: express.Request, req: express.Response) => this.controller.getAllGiftByUser(res, req));
+        router.get('/bygame/:game', (res: express.Request, req: express.Response) => this.controller.getAllGiftByGame(res, req));
+
         return router;
     }
 

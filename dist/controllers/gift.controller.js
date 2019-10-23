@@ -79,6 +79,28 @@ let GiftController = class GiftController {
             }
         });
     }
+    getAllGiftByUser(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield this.service.getAllGiftByUser(req.params.userId);
+                return res.status(204).send();
+            }
+            catch (err) {
+                return res.boom.boomify(err);
+            }
+        });
+    }
+    getAllGiftByGame(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield this.service.getAllGiftByUser(req.params.gameId);
+                return res.status(204).send();
+            }
+            catch (err) {
+                return res.boom.boomify(err);
+            }
+        });
+    }
 };
 GiftController = __decorate([
     inversify_1.injectable(),

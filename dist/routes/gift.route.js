@@ -32,6 +32,8 @@ let GiftRoute = class GiftRoute {
         router.post('/', (res, req) => this.controller.create(res, req));
         router.put('/:giftId', (res, req) => this.controller.update(res, req));
         router.delete('/:giftId', (res, req) => this.controller.delete(res, req));
+        router.get('/byuser/:userId', (res, req) => this.controller.getAllGiftByUser(res, req));
+        router.get('/bygame/:game', (res, req) => this.controller.getAllGiftByGame(res, req));
         return router;
     }
 };
