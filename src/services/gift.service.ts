@@ -35,4 +35,22 @@ export default class GiftService extends Observer<IGiftListenner>{
         await Gift.findByIdAndDelete(giftId);
         this.listeners.forEach(l => { l.onGiftDeleted(giftId); });
     }
+
+    async getAllGiftByUser(userId: string) {
+        let result: IGift[] = [];
+        (await this.gameUserGiftService.getGiftIdsByUser(userId)).forEach(async (gug) => {
+            result.push(await this.getGift(gug.giftid) as IGift);
+        });
+
+        return result;
+    }
+
+    async getAllGiftByGame(gameId: string) {
+        let result: IGift[] = [];
+        (await this.gameUserGiftService.getGiftIdsByUser(gameId)).forEach(async (gug) => {
+            result.push(await this.getGift(gug.giftid) as IGift);
+        });
+
+        return result;
+    }
 }
