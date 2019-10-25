@@ -13,7 +13,7 @@ export default class UserController implements ICrud {
         try {
             validateUserGet(req);
             let u = await this.service.getUser(req.params.userId);
-            return res.status(200).send({ user: u });
+            return res.status(200).send(u);
         } catch (err) {
             return res.boom.boomify(err);
         }
@@ -23,7 +23,7 @@ export default class UserController implements ICrud {
         try {
             validateUserCreate(req);
             let u = await this.service.createUser(req.body);
-            return res.status(200).send({ user: u });
+            return res.status(200).send(u);
         } catch (err) {
             return res.boom.boomify(err);
         }
@@ -33,7 +33,7 @@ export default class UserController implements ICrud {
         try {
             validateUpdateUser(req)
             let u = await this.service.updateUser(req.params.userId, req.body);
-            return res.status(200).send({ user: u });
+            return res.status(200).send(u);
         } catch (err) {
             return res.boom.boomify(err);
         }
@@ -52,7 +52,7 @@ export default class UserController implements ICrud {
     async getAllUserByGames(req: express.Request, res: express.Response) {
         try {
             let result = await this.service.getAllUsersByGame(req.params.userId);
-            return res.status(200).send({ users: result });
+            return res.status(200).send(result);
         } catch (err) {
             return res.boom.boomify(err);
         }
