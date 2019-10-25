@@ -36,7 +36,7 @@ let GameController = class GameController {
             try {
                 game_validator_1.validateGetGame(req);
                 let game = yield this.service.getGame(req.params.gameId);
-                return res.status(200).send({ game: game });
+                return res.status(200).send(game);
             }
             catch (err) {
                 return res.boom.boomify(err);
@@ -48,7 +48,7 @@ let GameController = class GameController {
             try {
                 game_validator_1.validateCreateGame(req);
                 let game = yield this.service.createGame(req.body);
-                return res.status(200).send({ game: game });
+                return res.status(200).send(game);
             }
             catch (err) {
                 return res.boom.boomify(err);
@@ -60,7 +60,7 @@ let GameController = class GameController {
             try {
                 game_validator_1.validateUpdateGame(req);
                 let game = yield this.service.updateGame(req.params.gameId, req.body);
-                return res.status(200).send({ game: game });
+                return res.status(200).send(game);
             }
             catch (err) {
                 return res.boom.boomify(err);
@@ -83,7 +83,7 @@ let GameController = class GameController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 let result = this.service.getAllGamesByUser(req.params.userId);
-                return res.status(200).send({ games: result });
+                return res.status(200).send(result);
             }
             catch (err) {
                 return res.boom.boomify(err);

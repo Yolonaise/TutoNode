@@ -37,7 +37,7 @@ let ApiController = class ApiController {
                 return res.boom.boomify(error);
             try {
                 let apis = yield api_model_1.default.find({ email: req.params.email });
-                return res.status(200).send({ apikeys: apis });
+                return res.status(200).send(apis);
             }
             catch (err) {
                 return res.boom.boomify(err);
@@ -54,7 +54,7 @@ let ApiController = class ApiController {
                 if (a != undefined)
                     return res.boom.conflict(`The server has already an app named ${req.body.applicationName}`);
                 const result = yield new api_model_1.default(Object.assign(Object.assign({}, req.body), { key: api_utils_1.default(req.body.applicationName) })).save();
-                return res.status(200).send({ api: result });
+                return res.status(200).send(result);
             }
             catch (err) {
                 return res.boom.boomify(err);
