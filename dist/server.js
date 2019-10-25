@@ -29,18 +29,14 @@ let Server = class Server {
         this.port = parseInt(process.env.PORT, 10) || 4201;
     }
     configure() {
+        var cors = require('cors');
         mongoose_1.connect(this.uri, { useUnifiedTopology: true, useNewUrlParser: true }, (err) => {
             if (err)
                 console.error.bind(console, 'MongoDB connection error:');
             else
                 console.log('Mongo db is connected');
         });
-        this.app.use(function (req, res, next) {
-            res.header("Access-Control-Allow-Origin", '*');
-            res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-            res.header("Access-Control-Allow-Headers", 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json');
-            next();
-        });
+        this.app.use(cors());
         this.app.use(express_boom_1.default());
         this.app.use(body_parser_1.default.json());
         this.app.use(body_parser_1.default.urlencoded({ extended: false }));
