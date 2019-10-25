@@ -52,7 +52,7 @@ export default class UserController implements ICrud {
     async getAllUserByGames(req: express.Request, res: express.Response) {
         try {
             let result = await this.service.getAllUsersByGame(req.params.userId);
-            return res.status(200).send({ users : result });
+            return res.status(200).send({ users: result });
         } catch (err) {
             return res.boom.boomify(err);
         }
