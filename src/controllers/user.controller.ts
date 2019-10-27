@@ -57,4 +57,13 @@ export default class UserController implements ICrud {
             return res.boom.boomify(err);
         }
     }
+
+    async enterIn(req: express.Request, res: express.Response) {
+        try {
+            let result = await this.service.enterIn(req.params.userId, req.query['name']);
+            return res.status(200).send({ users : result });
+        } catch (err) {
+            return res.boom.boomify(err);
+        }
+    }
 }

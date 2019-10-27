@@ -49,4 +49,15 @@ export default class UserService extends Observer<IUserListenner> {
 
         return result;
     }
+
+    async enterIn(email: string, name: string) {
+        let u = await User.findOne({ email: email});
+        if(u)
+            return u;
+        
+        if(!name || name.length < 2)
+            return Boom.notAcceptable('user has to be named');
+
+        return await this.createUser({ email: email, name: name } as IUser);
+    }
 }
