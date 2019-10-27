@@ -71,6 +71,16 @@ let UserService = class UserService extends service_observer_1.Observer {
             return result;
         });
     }
+    enterIn(email, name) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let u = yield user_mode_1.default.findOne({ email: email });
+            if (u)
+                return u;
+            if (!name || name.length < 2)
+                throw boom_1.default.notAcceptable('user has to be named');
+            return yield this.createUser({ email: email, name: name });
+        });
+    }
 };
 UserService = __decorate([
     inversify_1.injectable(),

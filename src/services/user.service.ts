@@ -56,7 +56,7 @@ export default class UserService extends Observer<IUserListenner> {
             return u;
         
         if(!name || name.length < 2)
-            return Boom.notAcceptable('user has to be named');
+            throw Boom.notAcceptable('user has to be named');
 
         return await this.createUser({ email: email, name: name } as IUser);
     }

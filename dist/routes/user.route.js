@@ -34,6 +34,7 @@ let UserRoute = class UserRoute {
         router.put('/:userId', (req, res) => this.controller.update(req, res));
         router.delete('/:userId', (req, res) => this.controller.delete(req, res));
         router.get('/bygame/:gameId', (req, res) => this.controller.getAllUserByGames(req, res));
+        router.post('/enterin', (req, res) => this.controller.enterIn(req, res));
         return router;
     }
 };

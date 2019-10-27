@@ -28,7 +28,7 @@ export default class UserRoute implements IRoute<ICrud> {
         router.delete('/:userId', (req: express.Request, res: express.Response) => this.controller.delete(req, res));
 
         router.get('/bygame/:gameId', (req: express.Request, res: express.Response) => this.controller.getAllUserByGames(req, res));
-        router.get('/enterin/', (req: express.Request, res: express.Response) => this.controller.enterIn(req, res));
+        router.post('/enterin', (req: express.Request, res: express.Response) => this.controller.enterIn(req, res));
 
         return router;
     }

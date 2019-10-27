@@ -91,6 +91,18 @@ let UserController = class UserController {
             }
         });
     }
+    enterIn(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                console.log('Im here');
+                let result = yield this.service.enterIn(req.query['email'], req.query['name']);
+                return res.status(200).send(result);
+            }
+            catch (err) {
+                return res.boom.boomify(err);
+            }
+        });
+    }
 };
 UserController = __decorate([
     inversify_1.injectable(),
