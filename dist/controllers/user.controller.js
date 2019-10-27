@@ -37,7 +37,7 @@ let UserController = class UserController {
             try {
                 user_validator_1.validateUserGet(req);
                 let u = yield this.service.getUser(req.params.userId);
-                return res.status(200).send({ user: u });
+                return res.status(200).send(u);
             }
             catch (err) {
                 return res.boom.boomify(err);
@@ -49,7 +49,7 @@ let UserController = class UserController {
             try {
                 user_validator_1.validateUserCreate(req);
                 let u = yield this.service.createUser(req.body);
-                return res.status(200).send({ user: u });
+                return res.status(200).send(u);
             }
             catch (err) {
                 return res.boom.boomify(err);
@@ -61,7 +61,7 @@ let UserController = class UserController {
             try {
                 user_validator_1.validateUpdateUser(req);
                 let u = yield this.service.updateUser(req.params.userId, req.body);
-                return res.status(200).send({ user: u });
+                return res.status(200).send(u);
             }
             catch (err) {
                 return res.boom.boomify(err);
@@ -84,7 +84,7 @@ let UserController = class UserController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 let result = yield this.service.getAllUsersByGame(req.params.userId);
-                return res.status(200).send({ users: result });
+                return res.status(200).send(result);
             }
             catch (err) {
                 return res.boom.boomify(err);

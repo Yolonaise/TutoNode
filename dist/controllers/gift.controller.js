@@ -35,8 +35,8 @@ let GiftController = class GiftController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 gift_validator_1.validateGetGift(req);
-                const gift = yield this.service.getGift(req.params.userId);
-                return res.status(200).send({ gifts: gift });
+                const gift = yield this.service.getGift(req.params.giftId);
+                return res.status(200).send(gift);
             }
             catch (err) {
                 return res.boom.boomify(err);
@@ -48,7 +48,7 @@ let GiftController = class GiftController {
             try {
                 gift_validator_1.validateCreateGift(req);
                 const gift = this.service.createGift(req.body);
-                return res.status(200).send({ gift: gift });
+                return res.status(200).send(gift);
             }
             catch (err) {
                 return res.boom.boomify(err);
@@ -60,7 +60,7 @@ let GiftController = class GiftController {
             try {
                 gift_validator_1.validateUpdateGift(req);
                 let gift = this.service.updateGift(req.params.giftId, req.body);
-                return res.status(200).send({ gift: gift });
+                return res.status(200).send(gift);
             }
             catch (err) {
                 return res.boom.boomify(err);
@@ -82,8 +82,8 @@ let GiftController = class GiftController {
     getAllGiftByUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield this.service.getAllGiftByUser(req.params.userId);
-                return res.status(204).send();
+                const result = yield this.service.getAllGiftByUser(req.params.userId);
+                return res.status(200).send(result);
             }
             catch (err) {
                 return res.boom.boomify(err);
@@ -93,8 +93,8 @@ let GiftController = class GiftController {
     getAllGiftByGame(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield this.service.getAllGiftByUser(req.params.gameId);
-                return res.status(204).send();
+                const result = yield this.service.getAllGiftByUser(req.params.gameId);
+                return res.status(200).send(result);
             }
             catch (err) {
                 return res.boom.boomify(err);

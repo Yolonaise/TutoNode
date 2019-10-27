@@ -14,7 +14,7 @@ export default class GameController implements ICrud {
         try {
             validateGetGame(req);
             let game = await this.service.getGame(req.params.gameId);
-            return res.status(200).send({ game: game });
+            return res.status(200).send(game);
         } catch (err) {
             return res.boom.boomify(err);
         }
@@ -24,7 +24,7 @@ export default class GameController implements ICrud {
         try {
             validateCreateGame(req);
             let game = await this.service.createGame(req.body);
-            return res.status(200).send({ game: game });
+            return res.status(200).send(game);
         } catch (err) {
             return res.boom.boomify(err);
         }
@@ -34,7 +34,7 @@ export default class GameController implements ICrud {
         try {
             validateUpdateGame(req)
             let game = await this.service.updateGame(req.params.gameId, req.body)
-            return res.status(200).send({ game: game });
+            return res.status(200).send(game);
         } catch (err) {
             return res.boom.boomify(err);
         }
@@ -53,7 +53,7 @@ export default class GameController implements ICrud {
     async getAllGamesByUser(req: express.Request, res: express.Response) {
         try {
             let result = this.service.getAllGamesByUser(req.params.userId);
-            return res.status(200).send({ games: result });
+            return res.status(200).send(result);
         } catch (err) {
             return res.boom.boomify(err);
         }

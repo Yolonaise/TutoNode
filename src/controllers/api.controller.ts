@@ -20,7 +20,7 @@ export default class ApiController implements ICrud {
 
         try {
             let apis = await Api.find({ email: req.params.email });
-            return res.status(200).send({ apikeys: apis });
+            return res.status(200).send(apis);
         } catch (err) {
             return res.boom.boomify(err);
         }
@@ -37,7 +37,7 @@ export default class ApiController implements ICrud {
                 return res.boom.conflict(`The server has already an app named ${req.body.applicationName}`);
 
             const result = await new Api({ ...req.body, key: generateKey(req.body.applicationName) }).save();
-            return res.status(200).send({ api: result });
+            return res.status(200).send(result);
         } catch (err) {
             return res.boom.boomify(err);
         }

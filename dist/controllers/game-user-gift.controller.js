@@ -25,53 +25,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const inversify_1 = require("inversify");
-const game_validator_1 = require("../validators/game.validator");
-const game_service_1 = __importDefault(require("../services/game.service"));
-let GameController = class GameController {
+const game_user_gift_service_1 = __importDefault(require("../services/game-user-gift.service"));
+let GameUserGiftController = class GameUserGiftController {
     constructor(service) {
         this.service = service;
     }
     get(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                game_validator_1.validateGetGame(req);
-                let game = yield this.service.getGame(req.params.gameId);
-                return res.status(200).send(game);
-            }
-            catch (err) {
-                return res.boom.boomify(err);
-            }
-        });
+        return res.boom.notImplemented();
     }
     create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                game_validator_1.validateCreateGame(req);
-                let game = yield this.service.createGame(req.body);
-                return res.status(200).send(game);
-            }
-            catch (err) {
-                return res.boom.boomify(err);
-            }
-        });
-    }
-    update(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                game_validator_1.validateUpdateGame(req);
-                let game = yield this.service.updateGame(req.params.gameId, req.body);
-                return res.status(200).send(game);
-            }
-            catch (err) {
-                return res.boom.boomify(err);
-            }
-        });
-    }
-    delete(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                game_validator_1.validateDeleteGame(req);
-                yield this.service.deleteGame(req.params.gameId);
+                yield this.service.linkGiftToUserGame(req.params.giftId, req.query["userId"], req.query["gameId"]);
                 return res.status(204).send();
             }
             catch (err) {
@@ -79,11 +44,14 @@ let GameController = class GameController {
             }
         });
     }
-    getAllGamesByUser(req, res) {
+    update(req, res) {
+        return res.boom.notImplemented();
+    }
+    delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                let result = this.service.getAllGamesByUser(req.params.userId);
-                return res.status(200).send(result);
+                yield this.service.unlinkGiftToUserGame(req.params.giftId, req.query["userId"], req.query["gameId"]);
+                return res.status(204).send();
             }
             catch (err) {
                 return res.boom.boomify(err);
@@ -91,9 +59,9 @@ let GameController = class GameController {
         });
     }
 };
-GameController = __decorate([
+GameUserGiftController = __decorate([
     inversify_1.injectable(),
-    __param(0, inversify_1.inject(game_service_1.default)),
-    __metadata("design:paramtypes", [game_service_1.default])
-], GameController);
-exports.default = GameController;
+    __param(0, inversify_1.inject(game_user_gift_service_1.default)),
+    __metadata("design:paramtypes", [game_user_gift_service_1.default])
+], GameUserGiftController);
+exports.default = GameUserGiftController;
